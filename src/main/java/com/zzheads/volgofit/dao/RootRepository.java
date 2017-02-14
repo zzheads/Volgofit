@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class RootRepository {
+    private String artifact = "VolgoFit API";
     private String version = "1.0.0";
     private String lastModified = "13/02/2017";
     private String createdBy = "Alexey Papin";
+    private String[] poweredBy = {"JavaSpring", "MySQL"};
 
     private static Gson gson = new Gson();
 
