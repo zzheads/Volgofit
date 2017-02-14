@@ -1,10 +1,7 @@
 package com.zzheads.volgofit.model.News;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.zzheads.volgofit.dto.NewsDto;
+import com.zzheads.volgofit.util.DateConverter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
@@ -12,7 +9,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +40,15 @@ public class News implements Serializable {
         this.image = image;
     }
 
+    public News(NewsDto news) {
+        this.id = news.getId();
+        this.date = DateConverter.stringToDate(news.getDate(), false);
+        this.text = news.getText();
+        this.author = news.getAuthor();
+        this.hashTags = news.getHashTags();
+        this.image = news.getImage();
+    }
+
     @Id
     @Column(name = "news_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +61,7 @@ public class News implements Serializable {
     }
 
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "DD/MM/YYYY")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     public Date getDate() {
         return date;
     }
@@ -97,42 +106,26 @@ public class News implements Serializable {
         this.image = image;
     }
 
-    private static ExclusionStrategy NewsExclusionStartegy = new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return (Objects.equals(f.getName(), "news"));
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    };
-
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(NewsExclusionStartegy).serializeNulls().create();
-
     public String toJson() {
-        return gson.toJson(this, News.class);
+        return new NewsDto(this).toJson();
     }
 
     public News(String json) {
-        News newsFromJson = gson.fromJson(json, News.class);
-        this.id = newsFromJson.id;
-        this.date = newsFromJson.date;
-        this.text = newsFromJson.text;
-        this.author = newsFromJson.author;
-        this.hashTags = newsFromJson.hashTags;
-        this.image = newsFromJson.image;
+        NewsDto newsDto = new NewsDto(json);
+        this.id = newsDto.getId();
+        this.date = DateConverter.stringToDate(newsDto.getDate(), false);
+        this.text = newsDto.getText();
+        this.author = newsDto.getAuthor();
+        this.hashTags = newsDto.getHashTags();
+        this.image = newsDto.getImage();
     }
 
     public static String toJson(Collection<News> news) {
-        java.lang.reflect.Type type = new TypeToken<Collection<News>>(){}.getType();
-        return gson.toJson(news, type);
+        return NewsDto.toJson(NewsDto.toDto(news));
     }
 
     public static Collection<News> fromJson(String json) {
-        java.lang.reflect.Type type = new TypeToken<Collection<News>>(){}.getType();
-        return gson.fromJson(json, type);
+        return NewsDto.fromDto(NewsDto.fromJson(json));
     }
 
 
