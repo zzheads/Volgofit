@@ -5,8 +5,9 @@ import com.zzheads.volgofit.model.Person.Trainer;
 import java.util.List;
 
 /**
- * Created by zzheads on 13.02.17.
- */
+ created by zzheads on 13.02.17
+ **/
+
 public interface TrainerService {
     Trainer findById(Long id);
     List<Trainer> findAll();

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by zzheads on 14.02.17.
- */
+ created by zzheads on 14.02.17
+ **/
 
 @Service
 public class RootServiceImpl implements RootService {

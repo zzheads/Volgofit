@@ -15,8 +15,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
- * Created by zzheads on 13.02.17.
- */
+ created by zzheads on 13.02.17
+ **/
 
 @RestController
 @RequestMapping(value = "/api/client")

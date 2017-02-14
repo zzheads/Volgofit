@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ /*
+ /* Project: <volgofit>
+ /* created by zzheads on 10.02.17
+ /*
+ **/
 
 @Entity
 public class Trainer extends Person {

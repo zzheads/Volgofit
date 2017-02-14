@@ -5,8 +5,8 @@ import com.zzheads.volgofit.model.Person.Client;
 import java.util.List;
 
 /**
- * Created by zzheads on 13.02.17.
- */
+ created by zzheads on 13.02.17
+ **/
 
 public interface ClientService {
     Client findById(Long id);

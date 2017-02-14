@@ -5,8 +5,8 @@ import com.zzheads.volgofit.model.Person.Person;
 import java.util.List;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ created by zzheads on 10.02.17
+ **/
 
 public interface PersonService {
     Person findById(Long id);

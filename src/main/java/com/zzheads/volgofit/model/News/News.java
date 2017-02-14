@@ -16,8 +16,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+/* volgofit - ${PACKAGE_NAME}
+/* created by zzheads on 10.02.17
+**/
 
 @Entity(name = "news")
 public class News implements Serializable {
@@ -25,7 +26,7 @@ public class News implements Serializable {
     private Date date;
     private String text;
     private String author;
-    private Set<String> hashTags = new HashSet<String>(0);
+    private Set<String> hashTags = new HashSet<>(0);
     private String image;
 
     public News() {

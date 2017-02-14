@@ -18,10 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * Created by zzheads on 09.02.17.
- */
-
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     static String REALM_NAME = "VolgafitAPI";

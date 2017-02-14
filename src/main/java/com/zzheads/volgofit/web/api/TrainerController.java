@@ -12,9 +12,9 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
-/**
- * Created by zzheads on 13.02.17.
- */
+//
+//  created by zzheads on 13.02.17
+//
 
 @RestController
 @RequestMapping(value = "/api/trainer")

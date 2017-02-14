@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by zzheads on 13.02.17.
- */
+ created by zzheads on 13.02.17
+ **/
 
 @RestControllerAdvice
 public class ExceptionsController {

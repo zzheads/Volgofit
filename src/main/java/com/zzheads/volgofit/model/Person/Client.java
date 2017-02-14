@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ /*
+ /* volgofit - ${PACKAGE_NAME}
+ /* created by zzheads on 10.02.17
+ /*
+ **/
 
 @Entity
 public class Client extends Person {

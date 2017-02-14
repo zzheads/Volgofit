@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ created by zzheads on 10.02.17
+ **/
 
 @Service
 public class NewsServiceImpl implements NewsService {

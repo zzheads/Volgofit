@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by zzheads on 14.02.17.
- */
+//
+// Project volgofit
+// Package ${PACKAGE_NAME}
+// Created by zzheads on 14.02.17.
+//
 
 @Repository
 public class RootRepository {
@@ -20,7 +22,7 @@ public class RootRepository {
         private String lastModified = "13/02/2017";
         private String createdBy = "Alexey Papin";
         private String poweredBy[] = {"JavaSpring", "MySQL"};
-    };
+    }
 
     private class Model {
         private Map<String, String> endpoints = new HashMap<String, String>() {{

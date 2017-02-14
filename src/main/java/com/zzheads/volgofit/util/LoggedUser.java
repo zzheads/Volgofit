@@ -7,8 +7,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.Collection;
 
 /**
- * Created by zzheads on 12.02.17.
- */
+ created by zzheads on 12.02.17
+ **/
+
 public class LoggedUser {
     private static String ADMIN = "ROLE_ADMIN";
 

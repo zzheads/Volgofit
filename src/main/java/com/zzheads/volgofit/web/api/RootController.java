@@ -11,8 +11,8 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
- * Created by zzheads on 14.02.17.
- */
+ created by zzheads on 14.02.17
+ **/
 
 @RestController
 @RequestMapping(value = "/api")

@@ -6,10 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.URISyntaxException;
 
-/**
- * Created by zzheads on 09.02.17.
- */
-
 @Configuration
 public class DataConfig {
 

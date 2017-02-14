@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ created by zzheads on 10.02.17
+ **/
+
 public interface WorkoutService {
     Workout findById(Long id);
     List<Workout> findAll();

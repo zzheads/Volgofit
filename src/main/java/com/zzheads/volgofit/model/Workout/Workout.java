@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ /
+ / Project: <volgofit>
+ / created by zzheads on 10.02.17
+ /
+ **/
 
 @Entity
 public class Workout {
@@ -140,14 +143,11 @@ public class Workout {
         clients.remove(client);
     }
 
-    public static Comparator<Workout> compareByDates = new Comparator<Workout>() {
-        @Override
-        public int compare(Workout o1, Workout o2) {
-            if (o1.getBeginTime().getTime() == o2.getBeginTime().getTime()) return 0;
-            if (o1.getBeginTime().getTime() > o2.getBeginTime().getTime()) return 1;
-            return -1;
-        }
-    };
+    public static Comparator<Workout> compareByDates = ( (o1, o2) -> {
+        if (o1.getBeginTime().getTime() == o2.getBeginTime().getTime()) return 0;
+        if (o1.getBeginTime().getTime() > o2.getBeginTime().getTime()) return 1;
+        return -1;
+    });
 
     private static ExclusionStrategy WorkoutExclusionStartegy = new ExclusionStrategy() {
         @Override

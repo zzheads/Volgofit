@@ -11,8 +11,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ created by zzheads on 10.02.17
+ **/
 
 @Service
 public class WorkoutServiceImpl implements WorkoutService {

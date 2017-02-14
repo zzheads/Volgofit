@@ -9,8 +9,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by zzheads on 09.02.17.
- */
+ /*
+ /* Project: <volgofit>
+ /*
+ /* created by zzheads on 09.02.17
+ /*
+ **/
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -68,7 +72,7 @@ public class Person {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -76,79 +80,79 @@ public class Person {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getPhoto() {
+    String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    void setPhoto(String photo) {
         this.photo = photo;
     }
 
-    public Date getBirthDate() {
+    Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public String getStreet() {
+    String getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
+    void setStreet(String street) {
         this.street = street;
     }
 
-    public String getCity() {
+    String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    void setCity(String city) {
         this.city = city;
     }
 
-    public String getCountry() {
+    String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    void setCountry(String country) {
         this.country = country;
     }
 
-    public String getZipCode() {
+    String getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(String zipCode) {
+    void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
-    public String getPhone() {
+    String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public List<String> getSocial() {
+    List<String> getSocial() {
         return social;
     }
 
-    public void setSocial(List<String> social) {
+    void setSocial(List<String> social) {
         this.social = social;
     }
 }

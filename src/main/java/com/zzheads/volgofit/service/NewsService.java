@@ -5,8 +5,8 @@ import com.zzheads.volgofit.model.News.News;
 import java.util.List;
 
 /**
- * Created by zzheads on 10.02.17.
- */
+ created by zzheads on 10.02.17
+ **/
 
 public interface NewsService {
     News findById(Long id);

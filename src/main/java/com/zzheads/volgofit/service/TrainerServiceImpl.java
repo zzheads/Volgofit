@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by zzheads on 13.02.17.
- */
+ created by zzheads on 13.02.17
+ **/
 
 @Service
 public class TrainerServiceImpl implements TrainerService {
