@@ -33,8 +33,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News save(News news) {
-        newsDao.save(news);
-        return news;
+        return newsDao.save(news);
     }
 
     @Override

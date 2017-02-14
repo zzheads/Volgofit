@@ -33,8 +33,7 @@ public class TrainerServiceImpl implements TrainerService {
 
     @Override
     public Trainer save(Trainer trainer) {
-        trainerDao.save(trainer);
-        return trainer;
+        return trainerDao.save(trainer);
     }
 
     @Override

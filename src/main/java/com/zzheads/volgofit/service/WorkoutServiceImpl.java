@@ -35,8 +35,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public Workout save(Workout workout) {
-        workoutDao.save(workout);
-        return workout;
+        return workoutDao.save(workout);
     }
 
     @Override

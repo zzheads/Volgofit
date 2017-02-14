@@ -29,4 +29,10 @@ public class RootController {
     public @ResponseBody String getInfo() {
         return rootService.getInfo();
     }
+
+    @RequestMapping(value = "/model",method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @ResponseStatus(OK)
+    public @ResponseBody String getModel() {
+        return rootService.getModel();
+    }
 }

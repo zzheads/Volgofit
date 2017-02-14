@@ -4,7 +4,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -17,16 +16,17 @@ public class DataConfig {
     @Bean
     public BasicDataSource dataSource() throws URISyntaxException {
 
-//          Use it for deploying
-//        String dbUrl = "jdbc:mysql://localhost/volgofit";
-//        String username = "root";
-//        String password = "xela1723014220";
+//        Local dataSource creds
+        String dbUrl = "jdbc:mysql://localhost/volgofit";
+        String username = "root";
+        String password = "xela1723014220";
 
-        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
-
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+//        Heroku deploing credentials
+//        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+//
+//        String username = dbUri.getUserInfo().split(":")[0];
+//        String password = dbUri.getUserInfo().split(":")[1];
+//        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
 
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setUrl(dbUrl);

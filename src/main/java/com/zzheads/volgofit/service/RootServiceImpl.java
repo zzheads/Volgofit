@@ -10,11 +10,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RootServiceImpl implements RootService {
+    private final RootRepository rootRepository;
+
     @Autowired
-    private RootRepository rootRepository;
+    public RootServiceImpl(RootRepository rootRepository) {
+        this.rootRepository = rootRepository;
+    }
 
     @Override
     public String getInfo() {
-        return rootRepository.toJson();
+        return rootRepository.getInfo();
+    }
+
+    @Override
+    public String getModel() {
+        return rootRepository.getModel();
     }
 }

@@ -32,8 +32,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client save(Client client) {
-        clientDao.save(client);
-        return client;
+        return clientDao.save(client);
     }
 
     @Override
