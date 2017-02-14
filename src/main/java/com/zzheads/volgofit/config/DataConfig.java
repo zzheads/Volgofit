@@ -18,15 +18,16 @@ public class DataConfig {
     public BasicDataSource dataSource() throws URISyntaxException {
 
 //          Use it for deploying
-
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
 //        String dbUrl = "jdbc:mysql://localhost/volgofit";
 //        String username = "root";
 //        String password = "xela1723014220";
+
+        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
+
         BasicDataSource basicDataSource = new BasicDataSource();
         basicDataSource.setUrl(dbUrl);
         basicDataSource.setUsername(username);
