@@ -3,10 +3,7 @@ package com.zzheads.volgofit.model.Person;
 import com.zzheads.volgofit.dto.TrainerDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -48,7 +45,11 @@ public class Trainer extends Person {
     }
 
     public Trainer(String json) {
-        new Trainer(new TrainerDto(json));
+        super(json);
+        TrainerDto trainerDto = new TrainerDto(json);
+        this.resume = trainerDto.getResume();
+        this.speciality = trainerDto.getSpeciality();
+        this.workouts = Arrays.stream(trainerDto.getWorkouts()).collect(Collectors.toList());
     }
 
     public String getSpeciality() {

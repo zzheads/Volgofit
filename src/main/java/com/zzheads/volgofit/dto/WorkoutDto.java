@@ -126,7 +126,7 @@ public class WorkoutDto {
     private static ExclusionStrategy WorkoutDtoExclusionStartegy = new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return false;
+            return f.getName().equals("workouts");
         }
 
         @Override

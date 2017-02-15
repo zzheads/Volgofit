@@ -1,7 +1,5 @@
 package com.zzheads.volgofit.dto;//
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -95,19 +93,7 @@ public class NewsDto {
         this.image = image;
     }
 
-    private static ExclusionStrategy NewsDtoExclusionStartegy = new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return false;
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return (clazz == News.class);
-        }
-    };
-
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(NewsDtoExclusionStartegy).serializeNulls().create();
+    private static Gson gson = new GsonBuilder().serializeNulls().create();
 
     public String toJson() {
         return gson.toJson(this, NewsDto.class);

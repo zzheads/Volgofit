@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.zzheads.volgofit.model.Person.Client;
+import com.zzheads.volgofit.model.Person.Trainer;
 import com.zzheads.volgofit.model.Workout.Workout;
 
 import java.lang.reflect.Type;
@@ -41,19 +42,20 @@ public class ClientDto extends PersonDto {
         this.workouts = workouts;
     }
 
-    private static ExclusionStrategy ClientDtoExclusionStrategy = new ExclusionStrategy() {
+    private static class ClientDtoExclusionStrategy implements ExclusionStrategy {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return false;
+            return (f.getName().equals("clients") && f.getDeclaringClass().equals(Workout.class))
+                    || (f.getName().equals("workouts") && f.getDeclaringClass().equals(Trainer.class));
         }
 
         @Override
         public boolean shouldSkipClass(Class<?> clazz) {
-            return (clazz == Client.class);
+            return false;
         }
-    };
+    }
 
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(ClientDtoExclusionStrategy).serializeNulls().create();
+    private static Gson gson = new GsonBuilder().setExclusionStrategies(new ClientDtoExclusionStrategy()).serializeNulls().create();
 
     public static Collection<ClientDto> toDto(Collection<Client> clients) {
         return clients.stream().map(ClientDto::new).collect(Collectors.toList());

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Person {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
@@ -64,8 +65,18 @@ public class Person {
     }
 
     public Person(PersonDto personDto) {
-        new Person(personDto.getFirstName(), personDto.getLastName(), personDto.getPhoto(), DateConverter.stringToDate(personDto.getBirthDate(), false), personDto.getStreet(), personDto.getCity(), personDto.getCountry(), personDto.getZipCode(),
-                personDto.getPhone(), personDto.getEmail(), Arrays.stream(personDto.getSocial()).collect(Collectors.toList()));
+        this.id = personDto.getId();
+        this.firstName = personDto.getFirstName();
+        this.lastName = personDto.getLastName();
+        this.photo = personDto.getPhoto();
+        this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
+        this.street = personDto.getStreet();
+        this.city = personDto.getCity();
+        this.country = personDto.getCountry();
+        this.zipCode = personDto.getZipCode();
+        this.phone = personDto.getPhone();
+        this.email = personDto.getEmail();
+        this.social = Arrays.stream(personDto.getSocial()).collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -169,6 +180,18 @@ public class Person {
     }
 
     public Person(String json) {
-        new Person(new PersonDto(json));
+        PersonDto personDto = new PersonDto(json);
+        this.id = personDto.getId();
+        this.firstName = personDto.getFirstName();
+        this.lastName = personDto.getLastName();
+        this.photo = personDto.getPhoto();
+        this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
+        this.street = personDto.getStreet();
+        this.city = personDto.getCity();
+        this.country = personDto.getCountry();
+        this.zipCode = personDto.getZipCode();
+        this.phone = personDto.getPhone();
+        this.email = personDto.getEmail();
+        this.social = Arrays.stream(personDto.getSocial()).collect(Collectors.toList());
     }
 }

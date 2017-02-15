@@ -3,10 +3,7 @@ package com.zzheads.volgofit.model.Person;
 import com.zzheads.volgofit.dto.ClientDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -25,6 +22,7 @@ public class Client extends Person {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @Column(name = "workouts")
+    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "workout_id") })
     private List<Workout> workouts;
 
     public Client() {
@@ -41,7 +39,9 @@ public class Client extends Person {
     }
 
     public Client(String json) {
-        new Client(new ClientDto(json));
+        super(json);
+        ClientDto clientDto = new ClientDto(json);
+        this.workouts = Arrays.stream(clientDto.getWorkouts()).collect(Collectors.toList());
     }
 
     public boolean isTimeFree(Date from, Date to) {

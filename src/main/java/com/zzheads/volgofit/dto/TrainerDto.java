@@ -5,6 +5,7 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.zzheads.volgofit.model.Person.Client;
 import com.zzheads.volgofit.model.Person.Trainer;
 import com.zzheads.volgofit.model.Workout.Workout;
 
@@ -68,12 +69,13 @@ public class TrainerDto extends PersonDto {
     private static ExclusionStrategy TrainerDtoExclusionStrategy = new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return false;
+            return (f.getName().equals("trainer") && f.getDeclaringClass().equals(Workout.class))
+                    || (f.getName().equals("workouts") && f.getDeclaringClass().equals(Client.class));
         }
 
         @Override
         public boolean shouldSkipClass(Class<?> clazz) {
-            return (clazz == Trainer.class);
+            return false;
         }
     };
 

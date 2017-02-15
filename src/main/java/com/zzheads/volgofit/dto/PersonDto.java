@@ -39,8 +39,18 @@ public class PersonDto {
     }
 
     public PersonDto(Person person) {
-        new PersonDto(person.getId(), person.getFirstName(), person.getLastName(), person.getPhoto(), DateConverter.dateToString(person.getBirthDate(), false), person.getStreet(), person.getCity(), person.getCountry(), person.getZipCode(),
-                person.getPhone(), person.getEmail(), person.getSocial().toArray(new String[person.getSocial().size()]));
+        this.id = person.getId();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.photo = person.getPhoto();
+        this.birthDate = DateConverter.dateToString(person.getBirthDate(), false);
+        this.street = person.getStreet();
+        this.city = person.getCity();
+        this.country = person.getCountry();
+        this.zipCode = person.getZipCode();
+        this.phone = person.getPhone();
+        this.email = person.getEmail();
+        this.social = person.getSocial().toArray(new String[person.getSocial().size()]);
     }
 
     public Long getId() {

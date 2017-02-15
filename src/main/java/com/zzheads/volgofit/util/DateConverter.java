@@ -20,16 +20,21 @@ public class DateConverter {
     }
 
     public static String dateToString(Date date, boolean withTime) {
-        DateFormat df = dateFormat(withTime);
-        return df.format(date);
+        if (date != null) {
+            DateFormat df = dateFormat(withTime);
+            return df.format(date);
+        }
+        return null;
     }
 
     public static Date stringToDate(String string, boolean withTime) {
-        DateFormat df = dateFormat(withTime);
-        try {
-            return df.parse(string);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (string != null) {
+            DateFormat df = dateFormat(withTime);
+            try {
+                return df.parse(string);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

@@ -38,9 +38,11 @@ public class Workout {
     private Date endTime;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id")
     private Trainer trainer;
 
-    @ManyToMany(mappedBy = "workouts", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "workout_id") }, inverseJoinColumns = { @JoinColumn(name = "id") })
     private List<Client> clients;
 
     public Workout() {
@@ -160,7 +162,16 @@ public class Workout {
     }
 
     public Workout(String json) {
-        new Workout(new WorkoutDto(json));
+        WorkoutDto workoutDto = new WorkoutDto(json);
+        this.id = workoutDto.getId();
+        this.title = workoutDto.getTitle();
+        this.description = workoutDto.getDescription();
+        this.place = workoutDto.getPlace();
+        this.image = workoutDto.getImage();
+        this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
+        this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
+        this.trainer = workoutDto.getTrainer();
+        this.clients = Arrays.stream(workoutDto.getClients()).collect(Collectors.toList());
     }
 
     public static String toJson(Collection<Workout> workouts) {
