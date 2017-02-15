@@ -9,9 +9,6 @@ import com.zzheads.volgofit.model.News.News;
 import com.zzheads.volgofit.util.DateConverter;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 //  created by zzheads on 14.02.17
@@ -21,7 +18,7 @@ public class NewsDto {
     private String date;
     private String text;
     private String author;
-    private Set<String> hashTags = new HashSet<>(0);
+    private String[] hashTags;
     private String image;
 
     public NewsDto(News news) {
@@ -29,7 +26,7 @@ public class NewsDto {
         this.date = DateConverter.dateToString(news.getDate(), false);
         this.text = news.getText();
         this.author = news.getAuthor();
-        this.hashTags = news.getHashTags();
+        this.hashTags = (String[]) news.getHashTags().toArray();
         this.image = news.getImage();
     }
 
@@ -41,7 +38,7 @@ public class NewsDto {
         return news.stream().map(News::new).collect(Collectors.toList());
     }
 
-    public NewsDto(Long id, String date, String text, String author, Set<String> hashTags, String image) {
+    public NewsDto(Long id, String date, String text, String author, String[] hashTags, String image) {
         this.id = id;
         this.date = date;
         this.text = text;
@@ -82,11 +79,11 @@ public class NewsDto {
         this.author = author;
     }
 
-    public Set<String> getHashTags() {
+    public String[] getHashTags() {
         return hashTags;
     }
 
-    public void setHashTags(Set<String> hashTags) {
+    public void setHashTags(String[] hashTags) {
         this.hashTags = hashTags;
     }
 
@@ -101,12 +98,12 @@ public class NewsDto {
     private static ExclusionStrategy NewsDtoExclusionStartegy = new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
-            return (Objects.equals(f.getName(), "news"));
+            return false;
         }
 
         @Override
         public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
+            return (clazz == News.class);
         }
     };
 

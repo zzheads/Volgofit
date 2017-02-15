@@ -1,20 +1,14 @@
 package com.zzheads.volgofit.model.Workout;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.zzheads.volgofit.dto.WorkoutDto;
 import com.zzheads.volgofit.model.Person.Client;
 import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.util.DateConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.lang.reflect.Type;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  /
@@ -50,6 +44,18 @@ public class Workout {
     private List<Client> clients;
 
     public Workout() {
+    }
+
+    public Workout(WorkoutDto workoutDto) {
+        this.id = workoutDto.getId();
+        this.title = workoutDto.getTitle();
+        this.description = workoutDto.getDescription();
+        this.place = workoutDto.getPlace();
+        this.image = workoutDto.getImage();
+        this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
+        this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
+        this.trainer = workoutDto.getTrainer();
+        this.clients = Arrays.stream(workoutDto.getClients()).collect(Collectors.toList());
     }
 
     public Workout(String title, String description, String place, String image, Date beginTime, Date endTime, Trainer trainer, List<Client> clients) {
@@ -149,39 +155,19 @@ public class Workout {
         return -1;
     });
 
-    private static ExclusionStrategy WorkoutExclusionStartegy = new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return (Objects.equals(f.getName(), "workouts"));
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    };
-
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(WorkoutExclusionStartegy).serializeNulls().create();
-
     public String toJson() {
-        return gson.toJson(this, Workout.class);
+        return (new WorkoutDto(this)).toJson();
     }
 
     public Workout(String json) {
-        Workout workout = gson.fromJson(json, Workout.class);
-        this.id = workout.id;
-        this.title = workout.title;
-        this.description = workout.description;
-        this.place = workout.place;
-        this.image = workout.image;
-        this.beginTime = workout.beginTime;
-        this.endTime = workout.endTime;
-        this.trainer = workout.trainer;
-        this.clients = workout.clients;
+        new Workout(new WorkoutDto(json));
     }
 
-    public static String toJson(List<Workout> workouts) {
-        Type token = new TypeToken<List<Workout>>(){}.getType();
-        return gson.toJson(workouts, token);
+    public static String toJson(Collection<Workout> workouts) {
+        return WorkoutDto.toJson(WorkoutDto.toDto(workouts));
+    }
+
+    public static Collection<Workout> fromJson(String json) {
+        return WorkoutDto.fromDto(WorkoutDto.fromJson(json));
     }
 }

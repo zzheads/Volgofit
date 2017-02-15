@@ -1,20 +1,17 @@
 package com.zzheads.volgofit.model.Person;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.zzheads.volgofit.dto.TrainerDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  /*
@@ -41,6 +38,17 @@ public class Trainer extends Person {
         this.speciality = speciality;
         this.resume = resume;
         this.workouts = workouts;
+    }
+
+    public Trainer(TrainerDto trainerDto) {
+        super(trainerDto);
+        this.speciality = trainerDto.getSpeciality();
+        this.resume = trainerDto.getResume();
+        this.workouts = Arrays.stream(trainerDto.getWorkouts()).collect(Collectors.toList());
+    }
+
+    public Trainer(String json) {
+        new Trainer(new TrainerDto(json));
     }
 
     public String getSpeciality() {
@@ -74,44 +82,15 @@ public class Trainer extends Person {
         return true;
     }
 
-    private static ExclusionStrategy TrainerExclusionStartegy = new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return (Objects.equals(f.getName(), "trainer"));
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-    };
-
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(TrainerExclusionStartegy).serializeNulls().create();
-
     public String toJson() {
-        return gson.toJson(this, Trainer.class);
+        return new TrainerDto(this).toJson();
     }
 
-    public Trainer(String json) {
-        Trainer trainer = gson.fromJson(json, Trainer.class);
-        this.setFirstName(trainer.getFirstName());
-        this.setLastName(trainer.getLastName());
-        this.setPhoto(trainer.getPhoto());
-        this.setBirthDate(trainer.getBirthDate());
-        this.setStreet(trainer.getStreet());
-        this.setCity(trainer.getCity());
-        this.setCountry(trainer.getCountry());
-        this.setZipCode(trainer.getZipCode());
-        this.setPhone(trainer.getPhone());
-        this.setEmail(trainer.getEmail());
-        this.setSocial(trainer.getSocial());
-        this.speciality = trainer.speciality;
-        this.resume = trainer.resume;
-        this.workouts = trainer.workouts;
+    public static String toJson(Collection<Trainer> trainers) {
+        return TrainerDto.toJson(TrainerDto.toDto(trainers));
     }
 
-    public static String toJson(List<Trainer> trainers) {
-        Type token = new TypeToken<List<Trainer>>(){}.getType();
-        return gson.toJson(trainers, token);
+    public static Collection<Trainer> fromJson(String json) {
+        return TrainerDto.fromDto(TrainerDto.fromJson(json));
     }
 }

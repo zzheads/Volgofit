@@ -9,10 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +42,7 @@ public class News implements Serializable {
         this.date = DateConverter.stringToDate(news.getDate(), false);
         this.text = news.getText();
         this.author = news.getAuthor();
-        this.hashTags = news.getHashTags();
+        this.hashTags = Arrays.stream(news.getHashTags()).collect(Collectors.toSet());
         this.image = news.getImage();
     }
 
@@ -116,7 +113,7 @@ public class News implements Serializable {
         this.date = DateConverter.stringToDate(newsDto.getDate(), false);
         this.text = newsDto.getText();
         this.author = newsDto.getAuthor();
-        this.hashTags = newsDto.getHashTags();
+        this.hashTags = Arrays.stream(newsDto.getHashTags()).collect(Collectors.toSet());
         this.image = newsDto.getImage();
     }
 

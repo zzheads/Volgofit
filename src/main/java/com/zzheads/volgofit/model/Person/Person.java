@@ -1,12 +1,15 @@
 package com.zzheads.volgofit.model.Person;
 
-import org.hibernate.annotations.*;
+import com.zzheads.volgofit.dto.PersonDto;
+import com.zzheads.volgofit.util.DateConverter;
+import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  /*
@@ -60,6 +63,11 @@ public class Person {
         this.social = social;
     }
 
+    public Person(PersonDto personDto) {
+        new Person(personDto.getFirstName(), personDto.getLastName(), personDto.getPhoto(), DateConverter.stringToDate(personDto.getBirthDate(), false), personDto.getStreet(), personDto.getCity(), personDto.getCountry(), personDto.getZipCode(),
+                personDto.getPhone(), personDto.getEmail(), Arrays.stream(personDto.getSocial()).collect(Collectors.toList()));
+    }
+
     public Long getId() {
         return id;
     }
@@ -84,7 +92,7 @@ public class Person {
         this.lastName = lastName;
     }
 
-    String getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
@@ -92,7 +100,7 @@ public class Person {
         this.photo = photo;
     }
 
-    Date getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -100,7 +108,7 @@ public class Person {
         this.birthDate = birthDate;
     }
 
-    String getStreet() {
+    public String getStreet() {
         return street;
     }
 
@@ -108,7 +116,7 @@ public class Person {
         this.street = street;
     }
 
-    String getCity() {
+    public String getCity() {
         return city;
     }
 
@@ -116,7 +124,7 @@ public class Person {
         this.city = city;
     }
 
-    String getCountry() {
+    public String getCountry() {
         return country;
     }
 
@@ -124,7 +132,7 @@ public class Person {
         this.country = country;
     }
 
-    String getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
@@ -132,7 +140,7 @@ public class Person {
         this.zipCode = zipCode;
     }
 
-    String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -140,7 +148,7 @@ public class Person {
         this.phone = phone;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -148,11 +156,19 @@ public class Person {
         this.email = email;
     }
 
-    List<String> getSocial() {
+    public List<String> getSocial() {
         return social;
     }
 
     void setSocial(List<String> social) {
         this.social = social;
+    }
+
+    public String toJson() {
+        return (new PersonDto(this)).toJson();
+    }
+
+    public Person(String json) {
+        new Person(new PersonDto(json));
     }
 }
