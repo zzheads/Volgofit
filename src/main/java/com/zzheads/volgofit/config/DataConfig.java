@@ -1,13 +1,22 @@
 package com.zzheads.volgofit.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 @Configuration
 public class DataConfig {
+    private final Environment env;
+
+    @Autowired
+    public DataConfig(Environment env) {
+        this.env = env;
+    }
 
     private class CustomDataSource extends BasicDataSource {
         public void init() {
@@ -18,17 +27,17 @@ public class DataConfig {
 
     @Bean
     public CustomDataSource dataSource() throws URISyntaxException {
-//        Local dataSource creds
-        String dbUrl = "jdbc:mysql://localhost/volgofit?useUnicode=yes&characterEncoding=UTF-8";
-        String username = "root";
-        String password = "xela1723014220";
+        boolean forProduction = Boolean.parseBoolean(env.getProperty("application.status.forProduction"));
+        String dbUrl = env.getProperty("spring.datasource.url");
+        String username = env.getProperty("spring.datasource.username");
+        String password = env.getProperty("spring.datasource.password");
 
-//        Heroku deploing credentials
-//        URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
-//
-//        String username = dbUri.getUserInfo().split(":")[0];
-//        String password = dbUri.getUserInfo().split(":")[1];
-//        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?useUnicode=yes&characterEncoding=UTF-8";
+        if (forProduction) {
+            URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
+            dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?useUnicode=yes&characterEncoding=UTF-8";
+            username = dbUri.getUserInfo().split(":")[0];
+            password = dbUri.getUserInfo().split(":")[1];
+        }
 
         CustomDataSource customDataSource = new CustomDataSource();
         customDataSource.setUrl(dbUrl);
