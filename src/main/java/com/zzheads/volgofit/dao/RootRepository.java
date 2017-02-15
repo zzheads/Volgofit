@@ -17,9 +17,9 @@ public class RootRepository {
     private static Gson gson = new Gson();
 
     private class Info {
-        private String artifact = "VolgoFit API";
-        private String version = "1.1.0";
-        private String lastModified = "14/02/2017";
+        private String artifact = "VolgaFit API";
+        private String version = "1.5.0";
+        private String lastModified = "16/02/2017";
         private String createdBy = "Alexey Papin";
         private String poweredBy[] = {"JavaSpring", "MySQL"};
     }
