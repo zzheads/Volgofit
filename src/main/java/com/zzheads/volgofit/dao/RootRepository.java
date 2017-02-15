@@ -18,8 +18,8 @@ public class RootRepository {
 
     private class Info {
         private String artifact = "VolgoFit API";
-        private String version = "1.0.0";
-        private String lastModified = "13/02/2017";
+        private String version = "1.1.0";
+        private String lastModified = "14/02/2017";
         private String createdBy = "Alexey Papin";
         private String poweredBy[] = {"JavaSpring", "MySQL"};
     }
