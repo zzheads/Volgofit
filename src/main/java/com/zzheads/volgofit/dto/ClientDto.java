@@ -24,7 +24,7 @@ public class ClientDto extends PersonDto {
 
     public ClientDto(Client client) {
         super(client);
-        this.workouts = (Workout[]) client.getWorkouts().toArray();
+        this.workouts = client.getWorkouts().toArray(new Workout[client.getWorkouts().size()]);
     }
 
     public ClientDto(String json) {

@@ -36,7 +36,7 @@ public class WorkoutDto {
         this.beginTime = DateConverter.dateToString(workout.getBeginTime(), true);
         this.endTime = DateConverter.dateToString(workout.getEndTime(), true);
         this.trainer = workout.getTrainer();
-        this.clients = (Client[]) workout.getClients().toArray();
+        this.clients = workout.getClients().toArray(new Client[workout.getClients().size()]);
     }
 
     public WorkoutDto(Long id, String title, String description, String place, String image, String beginTime, String endTime, Trainer trainer, Client[] clients) {

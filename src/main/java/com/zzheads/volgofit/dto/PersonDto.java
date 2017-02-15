@@ -40,7 +40,7 @@ public class PersonDto {
 
     public PersonDto(Person person) {
         new PersonDto(person.getId(), person.getFirstName(), person.getLastName(), person.getPhoto(), DateConverter.dateToString(person.getBirthDate(), false), person.getStreet(), person.getCity(), person.getCountry(), person.getZipCode(),
-                person.getPhone(), person.getEmail(), (String[]) person.getSocial().toArray());
+                person.getPhone(), person.getEmail(), person.getSocial().toArray(new String[person.getSocial().size()]));
     }
 
     public Long getId() {

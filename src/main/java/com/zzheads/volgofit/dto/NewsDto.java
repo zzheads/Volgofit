@@ -26,7 +26,7 @@ public class NewsDto {
         this.date = DateConverter.dateToString(news.getDate(), false);
         this.text = news.getText();
         this.author = news.getAuthor();
-        this.hashTags = (String[]) news.getHashTags().toArray();
+        this.hashTags = news.getHashTags().toArray(new String[news.getHashTags().size()]);
         this.image = news.getImage();
     }
 

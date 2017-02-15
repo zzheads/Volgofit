@@ -30,7 +30,7 @@ public class TrainerDto extends PersonDto {
         super(trainer);
         this.speciality = trainer.getSpeciality();
         this.resume = trainer.getResume();
-        this.workouts = (Workout[]) trainer.getWorkouts().toArray();
+        this.workouts = trainer.getWorkouts().toArray(new Workout[trainer.getWorkouts().size()]);
     }
 
     public TrainerDto(String json) {
