@@ -1,4 +1,4 @@
-package com.zzheads.volgofit.dto;//
+package com.zzheads.volgofit.dto.News;//
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

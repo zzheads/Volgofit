@@ -1,6 +1,6 @@
 package com.zzheads.volgofit.model.Person;
 
-import com.zzheads.volgofit.dto.ClientDto;
+import com.zzheads.volgofit.dto.Person.ClientDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
 import javax.persistence.*;

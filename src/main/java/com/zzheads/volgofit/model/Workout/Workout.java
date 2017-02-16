@@ -1,6 +1,6 @@
 package com.zzheads.volgofit.model.Workout;
 
-import com.zzheads.volgofit.dto.WorkoutDto;
+import com.zzheads.volgofit.dto.Workout.WorkoutDto;
 import com.zzheads.volgofit.model.Person.Client;
 import com.zzheads.volgofit.model.Person.Trainer;
 import com.zzheads.volgofit.util.DateConverter;

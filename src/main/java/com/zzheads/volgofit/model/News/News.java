@@ -1,6 +1,6 @@
 package com.zzheads.volgofit.model.News;
 
-import com.zzheads.volgofit.dto.NewsDto;
+import com.zzheads.volgofit.dto.News.NewsDto;
 import com.zzheads.volgofit.util.DateConverter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

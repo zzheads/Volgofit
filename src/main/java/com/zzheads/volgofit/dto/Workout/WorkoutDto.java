@@ -1,4 +1,4 @@
-package com.zzheads.volgofit.dto;//
+package com.zzheads.volgofit.dto.Workout;//
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

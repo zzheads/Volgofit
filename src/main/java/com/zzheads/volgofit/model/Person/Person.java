@@ -1,6 +1,6 @@
 package com.zzheads.volgofit.model.Person;
 
-import com.zzheads.volgofit.dto.PersonDto;
+import com.zzheads.volgofit.dto.Person.PersonDto;
 import com.zzheads.volgofit.util.DateConverter;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
