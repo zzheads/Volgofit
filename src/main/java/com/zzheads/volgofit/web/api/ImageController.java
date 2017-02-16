@@ -69,5 +69,7 @@ public class ImageController {
             throw new ApiError(NOT_FOUND);
         }
         imageService.delete(imageable.getImagePath());
+        imageable.setImagePath(null);
+        imageableService.save(className, imageable);
     }
 }
