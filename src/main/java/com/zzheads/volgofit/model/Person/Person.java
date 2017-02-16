@@ -1,6 +1,7 @@
 package com.zzheads.volgofit.model.Person;
 
 import com.zzheads.volgofit.dto.Person.PersonDto;
+import com.zzheads.volgofit.model.Imageable;
 import com.zzheads.volgofit.util.DateConverter;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,32 +20,18 @@ import java.util.stream.Collectors;
  /*
  **/
 
-@Entity
+@Entity(name = "person")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Person {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long id;
-
+public class Person extends Imageable {
     private String firstName;
     private String lastName;
-    private String photo;
-
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "DD/MM/YYYY")
     private Date birthDate;
-
     private String street;
     private String city;
     private String country;
     private String zipCode;
-
     private String phone;
     private String email;
-
-    @ElementCollection
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<String> social;
 
     Person() {
@@ -53,7 +40,6 @@ public class Person {
     public Person(String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, List<String> social) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.photo = photo;
         this.birthDate = birthDate;
         this.street = street;
         this.city = city;
@@ -65,10 +51,9 @@ public class Person {
     }
 
     public Person(PersonDto personDto) {
-        this.id = personDto.getId();
+        super.setId(personDto.getId());
         this.firstName = personDto.getFirstName();
         this.lastName = personDto.getLastName();
-        this.photo = personDto.getPhoto();
         this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
         this.street = personDto.getStreet();
         this.city = personDto.getCity();
@@ -79,12 +64,10 @@ public class Person {
         this.social = Arrays.stream(personDto.getSocial()).collect(Collectors.toList());
     }
 
+    @Override
+    @Column(name = "person_id")
     public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return super.getId();
     }
 
     public String getFirstName() {
@@ -103,14 +86,8 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "DD/MM/YYYY")
     public Date getBirthDate() {
         return birthDate;
     }
@@ -167,6 +144,8 @@ public class Person {
         this.email = email;
     }
 
+    @ElementCollection
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public List<String> getSocial() {
         return social;
     }
@@ -181,10 +160,9 @@ public class Person {
 
     public Person(String json) {
         PersonDto personDto = new PersonDto(json);
-        this.id = personDto.getId();
+        super.setId(personDto.getId());
         this.firstName = personDto.getFirstName();
         this.lastName = personDto.getLastName();
-        this.photo = personDto.getPhoto();
         this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
         this.street = personDto.getStreet();
         this.city = personDto.getCity();

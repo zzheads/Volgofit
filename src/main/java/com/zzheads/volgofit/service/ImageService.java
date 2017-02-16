@@ -1,13 +1,15 @@
 package com.zzheads.volgofit.service;//
 
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 
 //  created by zzheads on 16.02.17
 //
+
+@Service
 public interface ImageService {
-    String save(String fileName, MultipartFile imageFile) throws IOException;
-    Data load(String fileName);
+    void save(String fileName, byte[] image) throws IOException;
+    byte[] load(String fileName) throws IOException;
+    void delete(String fileName);
 }

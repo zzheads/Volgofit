@@ -3,7 +3,10 @@ package com.zzheads.volgofit.model.Person;
 import com.zzheads.volgofit.dto.Person.TrainerDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -17,14 +20,10 @@ import java.util.stream.Collectors;
  /*
  **/
 
-@Entity
+@Entity(name = "trainer")
 public class Trainer extends Person {
-
     private String speciality;
     private String resume;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer")
-    @Column(name = "workouts")
     private List<Workout> workouts;
 
     public Trainer() {
@@ -52,6 +51,12 @@ public class Trainer extends Person {
         this.workouts = Arrays.stream(trainerDto.getWorkouts()).collect(Collectors.toList());
     }
 
+    @Override
+    @Column(name = "trainer_id")
+    public Long getId() {
+        return super.getId();
+    }
+
     public String getSpeciality() {
         return speciality;
     }
@@ -68,6 +73,8 @@ public class Trainer extends Person {
         this.resume = resume;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "trainer")
+    @Column(name = "workouts")
     public List<Workout> getWorkouts() {
         return workouts;
     }

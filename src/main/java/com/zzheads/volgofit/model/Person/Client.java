@@ -17,12 +17,8 @@ import java.util.stream.Collectors;
  /*
  **/
 
-@Entity
+@Entity(name = "client")
 public class Client extends Person {
-
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @Column(name = "workouts")
-    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "id") }, inverseJoinColumns = { @JoinColumn(name = "workout_id") })
     private List<Workout> workouts;
 
     public Client() {
@@ -51,6 +47,15 @@ public class Client extends Person {
         return true;
     }
 
+    @Override
+    @Column(name = "client_id")
+    public Long getId() {
+        return super.getId();
+    }
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @Column(name = "workouts")
+    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "client_id") }, inverseJoinColumns = { @JoinColumn(name = "workout_id") })
     public List<Workout> getWorkouts() {
         return workouts;
     }

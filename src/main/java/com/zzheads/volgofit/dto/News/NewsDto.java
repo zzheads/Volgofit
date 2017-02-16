@@ -16,16 +16,16 @@ public class NewsDto {
     private String date;
     private String text;
     private String author;
+    private String imagePath;
     private String[] hashTags;
-    private String image;
 
     public NewsDto(News news) {
         this.id = news.getId();
         this.date = DateConverter.dateToString(news.getDate(), false);
         this.text = news.getText();
         this.author = news.getAuthor();
+        this.imagePath = news.getImagePath();
         this.hashTags = news.getHashTags().toArray(new String[news.getHashTags().size()]);
-        this.image = news.getImage();
     }
 
     public static Collection<NewsDto> toDto(Collection<News> news) {
@@ -36,13 +36,13 @@ public class NewsDto {
         return news.stream().map(News::new).collect(Collectors.toList());
     }
 
-    public NewsDto(Long id, String date, String text, String author, String[] hashTags, String image) {
+    public NewsDto(Long id, String date, String text, String author, String imagePath, String[] hashTags) {
         this.id = id;
         this.date = date;
         this.text = text;
         this.author = author;
+        this.imagePath = imagePath;
         this.hashTags = hashTags;
-        this.image = image;
     }
 
     public Long getId() {
@@ -77,20 +77,20 @@ public class NewsDto {
         this.author = author;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public String[] getHashTags() {
         return hashTags;
     }
 
     public void setHashTags(String[] hashTags) {
         this.hashTags = hashTags;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     private static Gson gson = new GsonBuilder().serializeNulls().create();
@@ -105,8 +105,8 @@ public class NewsDto {
         this.date = newsDto.getDate();
         this.text = newsDto.getText();
         this.author = newsDto.getAuthor();
+        this.imagePath = newsDto.getImagePath();
         this.hashTags = newsDto.getHashTags();
-        this.image = newsDto.getImage();
     }
 
     public static String toJson(Collection<NewsDto> newsDto) {
@@ -118,5 +118,4 @@ public class NewsDto {
         java.lang.reflect.Type type = new TypeToken<Collection<NewsDto>>(){}.getType();
         return gson.fromJson(json, type);
     }
-
 }

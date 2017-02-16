@@ -18,8 +18,8 @@ public class RootRepository {
 
     private class Info {
         private String artifact = "VolgaFit API";
-        private String version = "1.5.0";
-        private String lastModified = "16/02/2017";
+        private String version = "2.0.0";
+        private String lastModified = "17/02/2017";
         private String createdBy = "Alexey Papin";
         private String poweredBy[] = {"JavaSpring", "MySQL"};
     }
@@ -32,6 +32,7 @@ public class RootRepository {
             put("/api/workout", "Тренировки");
             put("/api/trainer", "Тренеры");
             put("/api/client", "Клиенты");
+            put("/api/image/{className}.{id}", "Изображения в формате JPEG");
         }};
     }
 

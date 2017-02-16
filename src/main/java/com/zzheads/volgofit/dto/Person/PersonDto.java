@@ -13,7 +13,7 @@ public class PersonDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private String photo;
+    private String imagePath;
     private String birthDate;
     private String street;
     private String city;
@@ -23,11 +23,11 @@ public class PersonDto {
     private String email;
     private String[] social;
 
-    public PersonDto(Long id, String firstName, String lastName, String photo, String birthDate, String street, String city, String country, String zipCode, String phone, String email, String[] social) {
+    public PersonDto(Long id, String firstName, String lastName, String imagePath, String birthDate, String street, String city, String country, String zipCode, String phone, String email, String[] social) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.photo = photo;
+        this.imagePath = imagePath;
         this.birthDate = birthDate;
         this.street = street;
         this.city = city;
@@ -42,7 +42,7 @@ public class PersonDto {
         this.id = person.getId();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.photo = person.getPhoto();
+        this.imagePath = person.getImagePath();
         this.birthDate = DateConverter.dateToString(person.getBirthDate(), false);
         this.street = person.getStreet();
         this.city = person.getCity();
@@ -77,12 +77,12 @@ public class PersonDto {
         this.lastName = lastName;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getBirthDate() {
@@ -172,7 +172,7 @@ public class PersonDto {
         this.id = personDto.id;
         this.firstName = personDto.firstName;
         this.lastName = personDto.lastName;
-        this.photo = personDto.photo;
+        this.imagePath = personDto.imagePath;
         this.birthDate = personDto.birthDate;
         this.street = personDto.street;
         this.city = personDto.city;

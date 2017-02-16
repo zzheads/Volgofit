@@ -30,25 +30,24 @@ public class ClientController {
 
     @RequestMapping(method = GET, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(OK)
-    public @ResponseBody
-    String getAllClients() {
-        List<Client> Clients = clientService.findAll();
-        return Client.toJson(Clients);
+    public @ResponseBody String getAllClients() {
+        List<Client> clients = clientService.findAll();
+        return Client.toJson(clients);
     }
 
     @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(OK)
     public @ResponseBody String getClientById(@PathVariable Long id) {
-        Client Client = clientService.findById(id);
-        if (Client != null) return Client.toJson();
+        Client client = clientService.findById(id);
+        if (client != null) return client.toJson();
         throw new ApiError(NOT_FOUND);
     }
 
     @RequestMapping(value = "/byName/{name}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(OK)
     public @ResponseBody String getClientByName(@PathVariable String name) {
-        Client Client = clientService.findByName(name);
-        if (Client != null) return Client.toJson();
+        Client client = clientService.findByName(name);
+        if (client != null) return client.toJson();
         throw new ApiError(NOT_FOUND);
     }
 
@@ -56,10 +55,10 @@ public class ClientController {
     @ResponseStatus(OK)
     public @ResponseBody String createClient(@RequestBody String json) {
         if (LoggedUser.isAdmin()) {
-            Client Client = new Client(json);
-            if (Client.getFirstName() != null) {
-                clientService.save(Client);
-                return Client.toJson();
+            Client client = new Client(json);
+            if (client.getFirstName() != null) {
+                clientService.save(client);
+                return client.toJson();
             }
             throw new ApiError(BAD_REQUEST);
         }
@@ -73,11 +72,11 @@ public class ClientController {
             if (clientService.findById(id) == null) {
                 throw new ApiError(NOT_FOUND);
             }
-            Client Client = new Client(jsonString);
-            if (Client.getFirstName() != null) {
-                Client.setId(id);
-                clientService.save(Client);
-                return Client.toJson();
+            Client client = new Client(jsonString);
+            if (client.getFirstName() != null) {
+                client.setId(id);
+                clientService.save(client);
+                return client.toJson();
             }
         }
         throw new ApiError(FORBIDDEN);
@@ -87,9 +86,9 @@ public class ClientController {
     @ResponseStatus(NO_CONTENT)
     public void deleteClient(@PathVariable Long id) {
         if (LoggedUser.isAdmin()) {
-            Client Client = clientService.findById(id);
-            if (Client != null) {
-                clientService.delete(Client);
+            Client client = clientService.findById(id);
+            if (client != null) {
+                clientService.delete(client);
                 return;
             }
             throw new ApiError(NOT_FOUND);

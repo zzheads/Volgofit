@@ -21,7 +21,7 @@ public class WorkoutDto {
     private String title;
     private String description;
     private String place;
-    private String image;
+    private String imagePath;
     private String beginTime;
     private String endTime;
     private Trainer trainer;
@@ -32,19 +32,19 @@ public class WorkoutDto {
         this.title = workout.getTitle();
         this.description = workout.getDescription();
         this.place = workout.getPlace();
-        this.image = workout.getImage();
+        this.imagePath = workout.getImagePath();
         this.beginTime = DateConverter.dateToString(workout.getBeginTime(), true);
         this.endTime = DateConverter.dateToString(workout.getEndTime(), true);
         this.trainer = workout.getTrainer();
         this.clients = workout.getClients().toArray(new Client[workout.getClients().size()]);
     }
 
-    public WorkoutDto(Long id, String title, String description, String place, String image, String beginTime, String endTime, Trainer trainer, Client[] clients) {
+    public WorkoutDto(Long id, String title, String description, String place, String imagePath, String beginTime, String endTime, Trainer trainer, Client[] clients) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.place = place;
-        this.image = image;
+        this.imagePath = imagePath;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.trainer = trainer;
@@ -83,12 +83,12 @@ public class WorkoutDto {
         this.place = place;
     }
 
-    public String getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getBeginTime() {
@@ -147,7 +147,7 @@ public class WorkoutDto {
         this.title = workout.title;
         this.description = workout.description;
         this.place = workout.place;
-        this.image = workout.image;
+        this.imagePath = workout.imagePath;
         this.beginTime = workout.beginTime;
         this.endTime = workout.endTime;
         this.trainer = workout.trainer;
