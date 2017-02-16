@@ -38,6 +38,11 @@ public class DataConfig {
             username = dbUri.getUserInfo().split(":")[0];
             password = dbUri.getUserInfo().split(":")[1];
         }
+        System.out.printf("\n\n\n dbUrl = %s", dbUrl);
+        System.out.printf("\n\n\n username = %s", username);
+        System.out.printf("\n\n\n password = %s", password);
+
+
 
         CustomDataSource customDataSource = new CustomDataSource();
         customDataSource.setUrl(dbUrl);
