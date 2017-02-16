@@ -15,11 +15,14 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -39,7 +42,6 @@ public class ImageController {
         factory.setMaxRequestSize("512KB");
         return factory.createMultipartConfig();
     }
-
 
     @RequestMapping(method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(OK)
@@ -66,4 +68,20 @@ public class ImageController {
         }
     }
 
+    @RequestMapping(value = "/{fileName}", method = GET, produces = {IMAGE_JPEG_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
+    @ResponseStatus(OK)
+    public @ResponseBody byte[] loadImage(@PathVariable String fileName) {
+        RandomAccessFile file = null;
+        try {
+            file = new RandomAccessFile(fileName, "r");
+            byte[] buffer = new byte[(int)file.length()];
+            file.readFully(buffer);
+            return buffer;
+        } catch (IOException e) {
+            e.printStackTrace();
+            ApiError error = new ApiError(INTERNAL_SERVER_ERROR);
+            error.setMessage(e.getMessage());
+            throw error;
+        }
+    }
 }
