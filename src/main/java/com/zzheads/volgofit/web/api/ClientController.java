@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -28,14 +29,14 @@ public class ClientController {
         this.clientService = ClientService;
     }
 
-    @RequestMapping(method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getAllClients() {
         List<Client> clients = clientService.findAll();
         return Client.toJson(clients);
     }
 
-    @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getClientById(@PathVariable Long id) {
         Client client = clientService.findById(id);
@@ -43,7 +44,7 @@ public class ClientController {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(value = "/byName/{name}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/byName/{name}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getClientByName(@PathVariable String name) {
         Client client = clientService.findByName(name);
@@ -51,7 +52,7 @@ public class ClientController {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(method = POST, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String createClient(@RequestBody String json) {
         if (LoggedUser.isAdmin()) {
@@ -65,7 +66,7 @@ public class ClientController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String updateClient(@PathVariable Long id, @RequestBody String jsonString) {
         if (LoggedUser.isAdmin()) {
@@ -82,7 +83,7 @@ public class ClientController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = DELETE, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(NO_CONTENT)
     public void deleteClient(@PathVariable Long id) {
         if (LoggedUser.isAdmin()) {

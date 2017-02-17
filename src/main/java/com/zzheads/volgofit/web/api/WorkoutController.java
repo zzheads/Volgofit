@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 //
@@ -26,14 +27,14 @@ public class WorkoutController {
         this.workoutService = workoutService;
     }
 
-    @RequestMapping(method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getAllWorkouts() {
         List<Workout> workouts = workoutService.findAll();
         return Workout.toJson(workouts);
     }
 
-    @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getWorkoutById(@PathVariable Long id) {
         Workout workout = workoutService.findById(id);
@@ -41,7 +42,7 @@ public class WorkoutController {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(method = POST, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String createWorkout(@RequestBody String json) {
         if (LoggedUser.isAdmin()) {
@@ -54,7 +55,7 @@ public class WorkoutController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String updateWorkout(@PathVariable Long id, @RequestBody String jsonString) {
         if (LoggedUser.isAdmin()) {
@@ -70,7 +71,7 @@ public class WorkoutController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = DELETE, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(NO_CONTENT)
     public void deleteWorkout(@PathVariable Long id) {
         if (LoggedUser.isAdmin()) {

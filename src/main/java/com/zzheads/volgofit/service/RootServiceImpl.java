@@ -26,4 +26,9 @@ public class RootServiceImpl implements RootService {
     public String getModel() {
         return rootRepository.getModel();
     }
+
+    @Override
+    public String getModel(String className) {
+        return rootRepository.getModel(className);
+    }
 }

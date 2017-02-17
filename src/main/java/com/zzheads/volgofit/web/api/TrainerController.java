@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 //
@@ -26,14 +27,14 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-    @RequestMapping(method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getAllTrainers() {
         List<Trainer> trainers = trainerService.findAll();
         return Trainer.toJson(trainers);
     }
 
-    @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getTrainerById(@PathVariable Long id) {
         Trainer trainer = trainerService.findById(id);
@@ -41,7 +42,7 @@ public class TrainerController {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(value = "/byName/{name}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/byName/{name}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getTrainerByName(@PathVariable String name) {
         Trainer trainer = trainerService.findByName(name);
@@ -49,7 +50,7 @@ public class TrainerController {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(method = POST, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String createTrainer(@RequestBody String json) {
         if (LoggedUser.isAdmin()) {
@@ -62,7 +63,7 @@ public class TrainerController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String updateTrainer(@PathVariable Long id, @RequestBody String jsonString) {
         if (LoggedUser.isAdmin()) {
@@ -78,7 +79,7 @@ public class TrainerController {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = DELETE, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(NO_CONTENT)
     public void deleteTrainer(@PathVariable Long id) {
         if (LoggedUser.isAdmin()) {

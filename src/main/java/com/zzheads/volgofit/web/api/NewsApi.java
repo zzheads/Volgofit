@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -27,14 +28,14 @@ public class NewsApi {
         this.newsService = newsService;
     }
 
-    @RequestMapping(method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getAllNews() {
         List<News> news = newsService.findAll();
         return News.toJson(news);
     }
 
-    @RequestMapping(value = "/{id}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getNews(@PathVariable Long id) {
         News news = newsService.findById(id);
@@ -44,13 +45,13 @@ public class NewsApi {
         throw new ApiError(NOT_FOUND);
     }
 
-    @RequestMapping(value = "/byHashTag/{hashTagName}", method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/byHashTag/{hashTagName}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String findNewsByHashTags(@PathVariable String hashTagName) {
         return News.toJson(newsService.findByHashTag(hashTagName));
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(method = RequestMethod.POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String addNews(@RequestBody String jsonString) {
         if (LoggedUser.isAdmin()) {
@@ -65,7 +66,7 @@ public class NewsApi {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String updateNews(@PathVariable Long id, @RequestBody String jsonString) {
         if (LoggedUser.isAdmin()) {
@@ -81,7 +82,7 @@ public class NewsApi {
         throw new ApiError(FORBIDDEN);
     }
 
-    @RequestMapping(value = "/{id}", method = DELETE, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(NO_CONTENT)
     public void deleteNews(@PathVariable Long id) {
         if (LoggedUser.isAdmin()) {

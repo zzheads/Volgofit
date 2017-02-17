@@ -1,6 +1,11 @@
 package com.zzheads.volgofit.dao;
 
 import com.google.gson.Gson;
+import com.zzheads.volgofit.model.News.News;
+import com.zzheads.volgofit.model.Person.Client;
+import com.zzheads.volgofit.model.Person.Person;
+import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.model.Workout.Workout;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -18,7 +23,7 @@ public class RootRepository {
 
     private class Info {
         private String artifact = "VolgaFit API";
-        private String version = "2.0.0";
+        private String version = "1.9.0";
         private String lastModified = "17/02/2017";
         private String createdBy = "Alexey Papin";
         private String poweredBy[] = {"JavaSpring", "MySQL"};
@@ -42,5 +47,16 @@ public class RootRepository {
 
     public String getModel() {
         return gson.toJson(new Model(), Model.class);
+    }
+
+    public String getModel(String className) {
+        switch (className) {
+            case "news": return gson.toJson(News.class.getFields());
+            case "person": return gson.toJson(Person.class.getFields());
+            case "workout": return gson.toJson(Workout.class.getFields());
+            case "trainer": return gson.toJson(Trainer.class.getFields());
+            case "client": return gson.toJson(Client.class.getFields());
+        }
+        return null;
     }
 }

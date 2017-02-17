@@ -2,12 +2,10 @@ package com.zzheads.volgofit.web.api;
 
 import com.zzheads.volgofit.service.RootService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
@@ -24,15 +22,21 @@ public class RootController {
         this.rootService = rootService;
     }
 
-    @RequestMapping(value = "/info",method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/info",method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getInfo() {
         return rootService.getInfo();
     }
 
-    @RequestMapping(value = "/model",method = GET, produces = {"application/json"}, consumes = {"application/json"})
+    @RequestMapping(value = "/model",method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getModel() {
         return rootService.getModel();
+    }
+
+    @RequestMapping(value = "/model/{className}",method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
+    @ResponseStatus(OK)
+    public @ResponseBody String getModel(@PathVariable String className) {
+        return rootService.getModel(className);
     }
 }

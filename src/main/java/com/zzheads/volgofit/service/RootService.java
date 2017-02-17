@@ -7,4 +7,5 @@ package com.zzheads.volgofit.service;
 public interface RootService {
     String getInfo();
     String getModel();
+    String getModel(String className);
 }
