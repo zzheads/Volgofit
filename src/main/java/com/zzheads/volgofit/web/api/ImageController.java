@@ -3,9 +3,12 @@ package com.zzheads.volgofit.web.api;//
 //  created by zzheads on 16.02.17
 //
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.zzheads.volgofit.exceptions.ApiError;
 import com.zzheads.volgofit.model.Imageable.Imageable;
-import com.zzheads.volgofit.service.*;
+import com.zzheads.volgofit.service.ImageService;
+import com.zzheads.volgofit.service.ImageableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +28,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class ImageController {
     private final ImageService imageService;
     private final ImageableService imageableService;
+    private final Gson gson = new GsonBuilder().serializeNulls().create();
 
     @Autowired
     public ImageController(ImageService imageService, ImageableService imageableService) {
@@ -42,12 +46,13 @@ public class ImageController {
 
     @RequestMapping(value = "/{className}.{id}", method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(OK)
-    public void saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) throws IOException {
+    public String saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) throws IOException {
         Imageable imageable = imageableService.findById(className, id);
         if (imageable == null) { throw new ApiError(NOT_FOUND); }
         imageable.initImagePath();
         imageableService.save(className, imageable.getId());
-        imageService.save(imageable.getImagePath(), imageFile.getBytes());
+        String msg = imageService.save(imageable.getImagePath(), imageFile.getBytes());
+        return gson.toJson(msg);
     }
 
     @RequestMapping(value = "/{className}.{id}", method = GET, consumes = {APPLICATION_JSON_UTF8_VALUE})
@@ -62,13 +67,14 @@ public class ImageController {
 
     @RequestMapping(value = "/{className}.{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(NO_CONTENT)
-    public void deleteImage(@PathVariable String className, @PathVariable Long id) {
+    public String deleteImage(@PathVariable String className, @PathVariable Long id) {
         Imageable imageable = imageableService.findById(className, id);
         if (imageable == null || imageable.getImagePath() == null) {
             throw new ApiError(NOT_FOUND);
         }
-        imageService.delete(imageable.getImagePath());
+        String msg = imageService.delete(imageable.getImagePath());
         imageable.setImagePath(null);
         imageableService.save(className, imageable.getId());
+        return gson.toJson(msg);
     }
 }

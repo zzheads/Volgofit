@@ -14,10 +14,11 @@ import java.io.RandomAccessFile;
 public class ImageServiceImpl implements ImageService {
 
     @Override
-    public void save(String fileName, byte[] image) throws IOException {
+    public String save(String fileName, byte[] image) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName);
         fos.write(image);
         fos.close();
+        return String.format("File %s saved.", new File(fileName).getAbsolutePath());
     }
 
     @Override
@@ -29,8 +30,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void delete(String fileName) {
+    public String delete(String fileName) {
         File file = new File(fileName);
         file.delete();
+        return String.format("File %s deleted.", file.getAbsolutePath());
     }
 }
