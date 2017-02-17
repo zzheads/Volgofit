@@ -6,6 +6,7 @@ import java.io.IOException;
 //
 
 public interface ImageService {
+    String getFileNames();
     String save(String fileName, byte[] image) throws IOException;
     byte[] load(String fileName) throws IOException;
     String delete(String fileName);

@@ -45,6 +45,12 @@ public class ImageController {
         return factory.createMultipartConfig();
     }
 
+    @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
+    @ResponseStatus(OK)
+    public String getImages() {
+        return imageService.getFileNames();
+    }
+
     @RequestMapping(value = "/{className}.{id}", method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(OK)
     public String saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) {
