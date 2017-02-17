@@ -4,7 +4,7 @@ package com.zzheads.volgofit.web.api;//
 //
 
 import com.zzheads.volgofit.exceptions.ApiError;
-import com.zzheads.volgofit.model.Imageable;
+import com.zzheads.volgofit.model.Imageable.Imageable;
 import com.zzheads.volgofit.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -16,7 +16,8 @@ import javax.servlet.MultipartConfigElement;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
@@ -43,11 +44,9 @@ public class ImageController {
     @ResponseStatus(OK)
     public void saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) throws IOException {
         Imageable imageable = imageableService.findById(className, id);
-        if (imageable == null) {
-            throw new ApiError(NOT_FOUND);
-        }
+        if (imageable == null) { throw new ApiError(NOT_FOUND); }
         imageable.initImagePath();
-        imageableService.save(className, imageable);
+        imageableService.save(className, imageable.getId());
         imageService.save(imageable.getImagePath(), imageFile.getBytes());
     }
 
@@ -70,6 +69,6 @@ public class ImageController {
         }
         imageService.delete(imageable.getImagePath());
         imageable.setImagePath(null);
-        imageableService.save(className, imageable);
+        imageableService.save(className, imageable.getId());
     }
 }

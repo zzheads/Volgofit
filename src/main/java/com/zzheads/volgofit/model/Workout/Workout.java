@@ -1,7 +1,7 @@
 package com.zzheads.volgofit.model.Workout;
 
 import com.zzheads.volgofit.dto.Workout.WorkoutDto;
-import com.zzheads.volgofit.model.Imageable;
+import com.zzheads.volgofit.model.Imageable.Imageable;
 import com.zzheads.volgofit.model.Person.Client;
 import com.zzheads.volgofit.model.Person.Trainer;
 import com.zzheads.volgofit.util.DateConverter;
@@ -20,47 +20,52 @@ import java.util.stream.Collectors;
 
 @Entity(name = "workout")
 public class Workout extends Imageable {
+    private Long id;
     private String title;
     private String description;
     private String place;
-    private String image;
     private Date beginTime;
     private Date endTime;
     private Trainer trainer;
+    private String imagePath;
     private List<Client> clients;
 
     public Workout() {
     }
 
     public Workout(WorkoutDto workoutDto) {
-        super.setId(workoutDto.getId());
+        this.id = workoutDto.getId();
         this.title = workoutDto.getTitle();
         this.description = workoutDto.getDescription();
         this.place = workoutDto.getPlace();
-        this.image = workoutDto.getImagePath();
+        this.imagePath = workoutDto.getImagePath();
         this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
         this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
         this.trainer = workoutDto.getTrainer();
         this.clients = Arrays.stream(workoutDto.getClients()).collect(Collectors.toList());
     }
 
-    public Workout(String title, String description, String place, String image, Date beginTime, Date endTime, Trainer trainer, List<Client> clients) {
+    public Workout(Long id, String title, String description, String place, String imagePath, Date beginTime, Date endTime, Trainer trainer, List<Client> clients) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.place = place;
-        this.image = image;
+        this.imagePath = imagePath;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.trainer = trainer;
         this.clients = clients;
     }
 
-    @Override
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "workout_id")
     public Long getId() {
-        return super.getId();
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -87,12 +92,12 @@ public class Workout extends Imageable {
         this.place = place;
     }
 
-    public String getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Temporal(TemporalType.DATE)
@@ -155,11 +160,11 @@ public class Workout extends Imageable {
 
     public Workout(String json) {
         WorkoutDto workoutDto = new WorkoutDto(json);
-        super.setId(workoutDto.getId());
+        this.id = workoutDto.getId();
         this.title = workoutDto.getTitle();
         this.description = workoutDto.getDescription();
         this.place = workoutDto.getPlace();
-        this.image = workoutDto.getImagePath();
+        this.imagePath = workoutDto.getImagePath();
         this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
         this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
         this.trainer = workoutDto.getTrainer();

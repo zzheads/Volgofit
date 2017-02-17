@@ -1,7 +1,7 @@
 package com.zzheads.volgofit.model.Person;
 
 import com.zzheads.volgofit.dto.Person.PersonDto;
-import com.zzheads.volgofit.model.Imageable;
+import com.zzheads.volgofit.model.Imageable.Imageable;
 import com.zzheads.volgofit.util.DateConverter;
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Entity(name = "person")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Person extends Imageable {
+    private Long id;
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -32,12 +33,14 @@ public class Person extends Imageable {
     private String zipCode;
     private String phone;
     private String email;
+    private String imagePath;
     private List<String> social;
 
     Person() {
     }
 
-    public Person(String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, List<String> social) {
+    public Person(Long id, String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, String imagePath, List<String> social) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -47,11 +50,12 @@ public class Person extends Imageable {
         this.zipCode = zipCode;
         this.phone = phone;
         this.email = email;
+        this.imagePath = imagePath;
         this.social = social;
     }
 
     public Person(PersonDto personDto) {
-        super.setId(personDto.getId());
+        this.id = personDto.getId();
         this.firstName = personDto.getFirstName();
         this.lastName = personDto.getLastName();
         this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
@@ -61,15 +65,19 @@ public class Person extends Imageable {
         this.zipCode = personDto.getZipCode();
         this.phone = personDto.getPhone();
         this.email = personDto.getEmail();
+        this.imagePath = personDto.getImagePath();
         this.social = Arrays.stream(personDto.getSocial()).collect(Collectors.toList());
     }
 
-    @Override
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "person_id")
     public Long getId() {
-        return super.getId();
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -146,6 +154,14 @@ public class Person extends Imageable {
         this.email = email;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @ElementCollection
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public List<String> getSocial() {
@@ -162,7 +178,7 @@ public class Person extends Imageable {
 
     public Person(String json) {
         PersonDto personDto = new PersonDto(json);
-        super.setId(personDto.getId());
+        this.id = personDto.getId();
         this.firstName = personDto.getFirstName();
         this.lastName = personDto.getLastName();
         this.birthDate = DateConverter.stringToDate(personDto.getBirthDate(), false);
@@ -172,6 +188,7 @@ public class Person extends Imageable {
         this.zipCode = personDto.getZipCode();
         this.phone = personDto.getPhone();
         this.email = personDto.getEmail();
+        this.imagePath = personDto.getImagePath();
         this.social = Arrays.stream(personDto.getSocial()).collect(Collectors.toList());
     }
 }

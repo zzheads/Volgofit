@@ -3,7 +3,10 @@ package com.zzheads.volgofit.model.Person;
 import com.zzheads.volgofit.dto.Person.TrainerDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -26,8 +29,8 @@ public class Trainer extends Person {
     public Trainer() {
     }
 
-    public Trainer(String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, List<String> social, String speciality, String resume, List<Workout> workouts) {
-        super(firstName, lastName, photo, birthDate, street, city, country, zipCode, phone, email, social);
+    public Trainer(Long id, String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, String imagePath, List<String> social, String speciality, String resume, List<Workout> workouts) {
+        super(id, firstName, lastName, photo, birthDate, street, city, country, zipCode, phone, email, imagePath, social);
         this.speciality = speciality;
         this.resume = resume;
         this.workouts = workouts;
@@ -49,11 +52,14 @@ public class Trainer extends Person {
     }
 
     @Override
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "trainer_id")
     public Long getId() {
         return super.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     public String getSpeciality() {

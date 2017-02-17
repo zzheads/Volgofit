@@ -4,16 +4,19 @@ import com.zzheads.volgofit.dao.ClientDao;
 import com.zzheads.volgofit.dao.NewsDao;
 import com.zzheads.volgofit.dao.TrainerDao;
 import com.zzheads.volgofit.dao.WorkoutDao;
-import com.zzheads.volgofit.model.Imageable;
+import com.zzheads.volgofit.model.Imageable.Imageable;
+import com.zzheads.volgofit.model.News.News;
+import com.zzheads.volgofit.model.Person.Client;
+import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.model.Workout.Workout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 //  created by zzheads on 17.02.17
 //
+
 @Service
 public class ImageableServiceImpl implements ImageableService {
     private final NewsDao newsDao;
@@ -29,28 +32,58 @@ public class ImageableServiceImpl implements ImageableService {
         this.clientDao = clientDao;
     }
 
-    private CrudRepository dao(String className) {
-        Map<String, CrudRepository> daos = new HashMap<String, CrudRepository>(){{
-            put("news", newsDao);
-            put("workout", workoutDao);
-            put("trainer", trainerDao);
-            put("client", clientDao);
-        }};
-        return daos.get(className);
+    @Override
+    public Collection<? extends Imageable> findAll(String className) {
+        switch (className.toLowerCase()) {
+            case "news": return (Collection<News>) newsDao.findAll();
+            case "workout": return (Collection<Workout>) workoutDao.findAll();
+            case "trainer": return (Collection<Trainer>) trainerDao.findAll();
+            case "client": return (Collection<Client>) clientDao.findAll();
+        }
+        return null;
     }
 
     @Override
     public Imageable findById(String className, Long id) {
-        return (Imageable) dao(className).findOne(id);
+        switch (className.toLowerCase()) {
+            case "news": return newsDao.findOne(id);
+            case "workout": return workoutDao.findOne(id);
+            case "trainer": return trainerDao.findOne(id);
+            case "client": return clientDao.findOne(id);
+        }
+        return null;
     }
 
     @Override
-    public Imageable save(String className, Imageable imageable) {
-        return (Imageable) dao(className).save(imageable);
+    public Imageable save(String className, Long id) {
+        switch (className.toLowerCase()) {
+            case "news":
+                News news = newsDao.findOne(id);
+                newsDao.save(news);
+                break;
+            case "workout":
+                Workout workout = workoutDao.findOne(id);
+                workoutDao.save(workout);
+                break;
+            case "trainer":
+                Trainer trainer = trainerDao.findOne(id);
+                trainerDao.save(trainer);
+                break;
+            case "client":
+                Client client = clientDao.findOne(id);
+                clientDao.save(client);
+                break;
+        }
+        return null;
     }
 
     @Override
-    public void delete(String className, Imageable imageable) {
-        dao(className).delete(imageable);
+    public void delete(String className, Long id) {
+        switch (className.toLowerCase()) {
+            case "news": newsDao.delete(id); break;
+            case "workout": workoutDao.delete(id); break;
+            case "trainer": trainerDao.delete(id); break;
+            case "client": clientDao.delete(id); break;
+        }
     }
 }

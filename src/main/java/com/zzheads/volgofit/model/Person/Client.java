@@ -24,8 +24,8 @@ public class Client extends Person {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, List<String> social, List<Workout> workouts) {
-        super(firstName, lastName, photo, birthDate, street, city, country, zipCode, phone, email, social);
+    public Client(Long id, String firstName, String lastName, String photo, Date birthDate, String street, String city, String country, String zipCode, String phone, String email, String imagePath, List<String> social, List<Workout> workouts) {
+        super(id, firstName, lastName, photo, birthDate, street, city, country, zipCode, phone, email, imagePath, social);
         this.workouts = workouts;
     }
 
@@ -48,11 +48,14 @@ public class Client extends Person {
     }
 
     @Override
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "client_id")
     public Long getId() {
         return super.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     @ManyToMany(cascade = CascadeType.PERSIST)

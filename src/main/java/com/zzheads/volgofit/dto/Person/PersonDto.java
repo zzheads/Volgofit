@@ -169,7 +169,7 @@ public class PersonDto {
 
     public PersonDto(String json) {
         PersonDto personDto = gson.fromJson(json, PersonDto.class);
-        this.id = personDto.id;
+        this.id = personDto.getId();
         this.firstName = personDto.firstName;
         this.lastName = personDto.lastName;
         this.imagePath = personDto.imagePath;
