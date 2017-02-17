@@ -38,4 +38,14 @@ public class DateConverter {
         }
         return null;
     }
+
+    public static String getWordAfterLastPoint(String text) {
+        if (text == null) return null;
+        String[] words = text.split("\\.");
+        String lastWord = null;
+        for (String word : words) {
+            lastWord = word;
+        }
+        return lastWord;
+    }
 }

@@ -6,8 +6,10 @@ import com.zzheads.volgofit.model.Person.Client;
 import com.zzheads.volgofit.model.Person.Person;
 import com.zzheads.volgofit.model.Person.Trainer;
 import com.zzheads.volgofit.model.Workout.Workout;
+import com.zzheads.volgofit.util.DateConverter;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,13 +52,32 @@ public class RootRepository {
     }
 
     public String getModel(String className) {
+        Map<String, String> model = new HashMap<>();
         switch (className) {
-            case "news": return gson.toJson(News.class.getFields());
-            case "person": return gson.toJson(Person.class.getFields());
-            case "workout": return gson.toJson(Workout.class.getFields());
-            case "trainer": return gson.toJson(Trainer.class.getFields());
-            case "client": return gson.toJson(Client.class.getFields());
+            case "news": for (Field field : News.class.getDeclaredFields()) {
+                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
+            }
+            break;
+
+            case "trainer": for (Field field : Trainer.class.getDeclaredFields()) {
+                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
+            }
+
+            case "client": for (Field field : Client.class.getDeclaredFields()) {
+                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
+            }
+
+            case "person": for (Field field : Person.class.getDeclaredFields()) {
+                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
+            }
+            break;
+
+            case "workout": for (Field field : Workout.class.getDeclaredFields()) {
+                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
+            }
+            break;
+            default: return null;
         }
-        return null;
+        return gson.toJson(model);
     }
 }

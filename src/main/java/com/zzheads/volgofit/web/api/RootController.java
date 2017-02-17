@@ -1,5 +1,6 @@
 package com.zzheads.volgofit.web.api;
 
+import com.zzheads.volgofit.exceptions.ServerError;
 import com.zzheads.volgofit.service.RootService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,10 @@ public class RootController {
     @RequestMapping(value = "/model/{className}",method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
     public @ResponseBody String getModel(@PathVariable String className) {
-        return rootService.getModel(className);
+        String answer = rootService.getModel(className);
+        if (answer == null) {
+            throw new ServerError(String.format("Can not find %s class.", className), null);
+        }
+        return answer;
     }
 }

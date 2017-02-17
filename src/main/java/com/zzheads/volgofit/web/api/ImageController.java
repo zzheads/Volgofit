@@ -6,6 +6,7 @@ package com.zzheads.volgofit.web.api;//
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zzheads.volgofit.exceptions.ApiError;
+import com.zzheads.volgofit.exceptions.ServerError;
 import com.zzheads.volgofit.model.Imageable.Imageable;
 import com.zzheads.volgofit.service.ImageService;
 import com.zzheads.volgofit.service.ImageableService;
@@ -46,23 +47,31 @@ public class ImageController {
 
     @RequestMapping(value = "/{className}.{id}", method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(OK)
-    public String saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) throws IOException {
+    public String saveImage(@RequestParam("imageFile") MultipartFile imageFile, @PathVariable String className, @PathVariable Long id) {
         Imageable imageable = imageableService.findById(className, id);
         if (imageable == null) { throw new ApiError(NOT_FOUND); }
         imageable.initImagePath();
         imageableService.save(className, imageable.getId());
-        String msg = imageService.save(imageable.getImagePath(), imageFile.getBytes());
-        return gson.toJson(msg);
+        try {
+            String msg = imageService.save(imageable.getImagePath(), imageFile.getBytes());
+            return gson.toJson(msg);
+        } catch (IOException exc) {
+            throw new ServerError(exc);
+        }
     }
 
     @RequestMapping(value = "/{className}.{id}", method = GET, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
-    public byte[] loadImage(@PathVariable String className, @PathVariable Long id) throws IOException {
+    public byte[] loadImage(@PathVariable String className, @PathVariable Long id) {
         Imageable imageable = imageableService.findById(className, id);
         if (imageable == null || imageable.getImagePath() == null) {
             throw new ApiError(NOT_FOUND);
         }
-        return imageService.load(imageable.getImagePath());
+        try {
+            return imageService.load(imageable.getImagePath());
+        } catch (IOException exc) {
+            throw new ServerError(exc);
+        }
     }
 
     @RequestMapping(value = "/{className}.{id}", method = DELETE, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
