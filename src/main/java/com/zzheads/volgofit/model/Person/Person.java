@@ -65,6 +65,8 @@ public class Person extends Imageable {
     }
 
     @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "person_id")
     public Long getId() {
         return super.getId();

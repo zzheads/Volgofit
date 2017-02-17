@@ -48,6 +48,8 @@ public class Client extends Person {
     }
 
     @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "client_id")
     public Long getId() {
         return super.getId();

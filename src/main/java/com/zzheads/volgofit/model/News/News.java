@@ -43,6 +43,8 @@ public class News extends Imageable {
     }
 
     @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "news_id")
     public Long getId() {
         return super.getId();

@@ -56,6 +56,8 @@ public class Workout extends Imageable {
     }
 
     @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "workout_id")
     public Long getId() {
         return super.getId();

@@ -3,10 +3,7 @@ package com.zzheads.volgofit.model.Person;
 import com.zzheads.volgofit.dto.Person.TrainerDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -52,6 +49,8 @@ public class Trainer extends Person {
     }
 
     @Override
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "trainer_id")
     public Long getId() {
         return super.getId();
