@@ -3,7 +3,7 @@ package com.zzheads.volgofit.model.Imageable;//
 //  created by zzheads on 17.02.17
 //
 public class Imageable implements ImageableInterface {
-    transient private static final String DIR_NAME = "images/";
+    transient private static final String DIR_NAME = "";
     transient private static final String EXT_NAME = ".jpg";
     transient private static final String DIVIDER = "_";
 
