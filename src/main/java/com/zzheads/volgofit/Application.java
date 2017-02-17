@@ -16,7 +16,10 @@ public class Application {
     public static void main(String[] args) {
         File imagesDir = new File(DIR_NAME);
         if (!imagesDir.exists()) {
-            imagesDir.mkdir();
+            if (imagesDir.mkdir())
+                System.out.printf("Directory %s created.", imagesDir.getAbsolutePath());
+            else
+                System.out.printf("Can not create directory %s.", imagesDir.getAbsolutePath());
         }
         SpringApplication.run(Application.class, args);
     }
