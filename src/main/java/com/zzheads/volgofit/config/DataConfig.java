@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 @Configuration
 public class DataConfig {
     private final Environment env;
-    private static final boolean DEPLOY = false;
+    private static final boolean DEPLOY = true;
 
     @Autowired
     public DataConfig(Environment env) {
@@ -26,6 +26,7 @@ public class DataConfig {
         }
     }
 
+    @SuppressWarnings("UnusedAssignment")
     @Bean
     public CustomDataSource dataSource() throws URISyntaxException {
         String dbUrl = env.getProperty("spring.datasource.url");
