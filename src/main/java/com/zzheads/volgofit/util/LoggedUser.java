@@ -13,7 +13,7 @@ import java.util.Collection;
 public class LoggedUser {
     private static String ADMIN = "ROLE_ADMIN";
 
-    private static Authentication getAuthentication() {
+    public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
@@ -21,5 +21,4 @@ public class LoggedUser {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         return authorities.stream().anyMatch(auth -> auth.getAuthority().equals(ADMIN));
     }
-
 }

@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 @Configuration
 public class DataConfig {
     private final Environment env;
-    private static final boolean DEPLOY = true;
+    private static final boolean DEPLOY = false;
 
     @Autowired
     public DataConfig(Environment env) {

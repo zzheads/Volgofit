@@ -1,15 +1,18 @@
 package com.zzheads.volgofit.config;
 
+import com.zzheads.volgofit.model.User.Role;
+import com.zzheads.volgofit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 import javax.servlet.ServletException;
@@ -18,14 +21,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static org.springframework.http.HttpMethod.*;
+
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final UserService userService;
+
     static String REALM_NAME = "VolgafitAPI";
 
     @Autowired
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
+    @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("root").password("root").roles("ADMIN");
-        auth.inMemoryAuthentication().withUser("user").password("pass").roles("USER");
+        auth.inMemoryAuthentication().withUser("root").password("root").roles(Role.ADMIN_ROLE);
+        auth.inMemoryAuthentication().withUser("user").password("pass").roles(Role.USER_ROLE);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -33,10 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/**").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/**").authenticated()
-                .antMatchers(HttpMethod.PUT, "/api/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/api/**").authenticated()
+                .antMatchers(POST, "/api/client/**").authenticated()
+                .antMatchers(GET, "/api/**").authenticated()
+                .antMatchers(PUT, "/api/**").authenticated()
+                .antMatchers(DELETE, "/api/**").authenticated()
                 .anyRequest().permitAll()
                 .and().httpBasic().realmName(REALM_NAME).authenticationEntryPoint(getBasicAuthEntryPoint())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -50,7 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /* To allow Pre-flight [OPTIONS] request from browser */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+        web.ignoring().antMatchers(OPTIONS, "/**");
+//        web.ignoring().antMatchers(GET, "/api/user");
+//        web.ignoring().antMatchers(POST, "/api/user");
+//        web.ignoring().antMatchers(PUT, "/api/user");
+//        web.ignoring().antMatchers(DELETE, "/api/user");
     }
 }
 
