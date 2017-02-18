@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static java.lang.Long.parseLong;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -45,11 +46,15 @@ public class UserController {
         return User.toJson(users);
     }
 
-    @RequestMapping(value = "/{id}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/{idOrName}", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
     @ResponseStatus(OK)
-    public String getUser() {
-        Collection<User> users = userService.findAll();
-        return User.toJson(users);
+    public String getUser(@PathVariable String idOrName) {
+        try {
+            Long userId = parseLong(idOrName);
+            return userService.findById(userId).toJson();
+        } catch (NumberFormatException exc) {
+            return userService.findByName(idOrName).toJson();
+        }
     }
 
     @RequestMapping(method = POST, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
