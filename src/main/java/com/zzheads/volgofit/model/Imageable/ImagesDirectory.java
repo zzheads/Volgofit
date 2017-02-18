@@ -19,8 +19,10 @@ public class ImagesDirectory {
         this.directory = new File(DIR_NAME);
         this.absolutePath = this.directory.getAbsolutePath();
         this.fileNames = this.directory.list();
-        assert this.fileNames != null;
-        this.count = this.fileNames.length;
+        if (this.fileNames != null)
+            this.count = this.fileNames.length;
+        else
+            this.count = 0;
     }
 
     public void createIfNeeded(@SuppressWarnings("SameParameterValue") boolean withDebugInfo) {
