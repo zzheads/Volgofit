@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
@@ -26,24 +25,21 @@ import static org.springframework.http.HttpMethod.*;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     static String REALM_NAME = "VolgafitAPI";
 
     @Autowired
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("root").password("root").roles(Role.ADMIN_ROLE);
         auth.inMemoryAuthentication().withUser("user").password("pass").roles(Role.USER_ROLE);
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -69,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(OPTIONS, "/**");
-//        web.ignoring().antMatchers(GET, "/api/user");
+        web.ignoring().antMatchers(GET, "/api/user/confirm");
 //        web.ignoring().antMatchers(POST, "/api/user");
 //        web.ignoring().antMatchers(PUT, "/api/user");
 //        web.ignoring().antMatchers(DELETE, "/api/user");

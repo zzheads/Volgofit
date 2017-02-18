@@ -18,7 +18,7 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
-    private boolean enabled;
+    private Boolean enabled;
     private RoleDto role;
 
     public UserDto(User user) {
@@ -31,7 +31,7 @@ public class UserDto {
         }
     }
 
-    public UserDto(Long id, String username, String password, boolean enabled, RoleDto role) {
+    public UserDto(Long id, String username, String password, Boolean enabled, RoleDto role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -94,11 +94,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 

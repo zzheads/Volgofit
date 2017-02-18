@@ -13,10 +13,12 @@ import java.net.URISyntaxException;
 public class DataConfig {
     private final Environment env;
     private static final boolean DEPLOY = false;
+    static String HOST;
 
     @Autowired
     public DataConfig(Environment env) {
         this.env = env;
+        HOST = "https://localhost:8080";
     }
 
     private class CustomDataSource extends BasicDataSource {
@@ -35,9 +37,10 @@ public class DataConfig {
 
         if (DEPLOY) {
             URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
-            dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?useUnicode=yes&characterEncoding=UTF-8";
+            dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?autoReconnect=true&useSSL=false&useUnicode=yes&characterEncoding=UTF-8";
             username = dbUri.getUserInfo().split(":")[0];
             password = dbUri.getUserInfo().split(":")[1];
+            HOST = dbUri.getHost();
         }
 
         CustomDataSource customDataSource = new CustomDataSource();

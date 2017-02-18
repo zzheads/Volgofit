@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private boolean enabled;
+    private Boolean enabled;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "role_id")
@@ -34,7 +34,7 @@ public class User implements UserDetails {
         this.enabled = false;
     }
 
-    public User(String username, String password, boolean enabled, Role role) {
+    public User(String username, String password, Boolean enabled, Role role) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -91,9 +91,11 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+    public Boolean getEnabled() {return this.enabled;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
