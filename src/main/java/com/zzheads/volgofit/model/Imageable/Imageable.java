@@ -6,7 +6,7 @@ import static com.zzheads.volgofit.util.DateConverter.getWordAfterLastPoint;
 //
 public class Imageable implements ImageableInterface {
     transient private static final String PREFIX = "image_of_";
-    transient public static final String DIR_NAME = "uploaded_images";
+    transient static final String DIR_NAME = "uploaded_images";
     transient private static final String EXT_NAME = ".jpg";
     transient private static final String DIVIDER = "_";
 
@@ -21,7 +21,8 @@ public class Imageable implements ImageableInterface {
     }
 
     @Override
-    public void setImagePath(String imagePath) {}
+    public void setImagePath(String imagePath) {
+    }
 
     @Override
     public void initImagePath() {

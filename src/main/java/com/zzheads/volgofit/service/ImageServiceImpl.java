@@ -1,38 +1,22 @@
 package com.zzheads.volgofit.service;//
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.zzheads.volgofit.model.Imageable.ImagesDirectory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static com.zzheads.volgofit.model.Imageable.Imageable.DIR_NAME;
 
 //  created by zzheads on 16.02.17
 //
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    transient private static Gson gson = new GsonBuilder().serializeNulls().create();
 
     @Override
     public String getFileNames() {
-        class Directory {
-            private File directory;
-            private ArrayList<String> fileNames;
-
-            private Directory() {
-                this.directory = new File(DIR_NAME);
-                this.fileNames = new ArrayList<>(Arrays.asList(this.directory.list()));
-            }
-        }
-        Directory dir = new Directory();
-        return gson.toJson(dir, Directory.class);
+        return new ImagesDirectory().toJson();
     }
 
     @Override
@@ -54,7 +38,9 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public String delete(String fileName) {
         File file = new File(fileName);
-        file.delete();
-        return String.format("File %s deleted.", file.getAbsolutePath());
+        if (file.delete())
+            return String.format("File %s deleted.", file.getAbsolutePath());
+        else
+            return String.format("Can not delete %s file.", file.getAbsolutePath());
     }
 }
