@@ -9,11 +9,20 @@ import org.springframework.core.env.Environment;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.zzheads.volgofit.config.DataConfig.AppStatus.DEPLOY;
+
 @Configuration
 public class DataConfig {
     private final Environment env;
-    private static final boolean DEPLOY = false;
     static String HOST;
+    private AppStatus appStatus = DEPLOY;
+
+    enum AppStatus {
+        DEBUG,
+        DEPLOY,
+        PRODUCTION
+    }
+
 
     @Autowired
     public DataConfig(Environment env) {
@@ -35,9 +44,9 @@ public class DataConfig {
         String username = env.getProperty("spring.datasource.username");
         String password = env.getProperty("spring.datasource.password");
 
-        if (DEPLOY) {
+        if (appStatus == DEPLOY) {
             URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
-            dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?autoReconnect=true&useSSL=false&useUnicode=yes&characterEncoding=UTF-8";
+            dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath() + "?autoReconnect=true&useUnicode=yes&characterEncoding=UTF-8";
             username = dbUri.getUserInfo().split(":")[0];
             password = dbUri.getUserInfo().split(":")[1];
             HOST = dbUri.getHost();
