@@ -7,7 +7,6 @@ import com.zzheads.volgofit.dto.ApiResult;
 import com.zzheads.volgofit.exceptions.ApiError;
 import com.zzheads.volgofit.model.User.Role;
 import com.zzheads.volgofit.model.User.User;
-import com.zzheads.volgofit.service.RoleService;
 import com.zzheads.volgofit.service.UserService;
 import com.zzheads.volgofit.util.LoggedUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +29,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping(value = "/api/user")
 public class UserController {
     private final UserService userService;
-    private final RoleService roleService;
     private final Gson gson = new GsonBuilder().serializeNulls().create();
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @RequestMapping(method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
@@ -62,7 +59,7 @@ public class UserController {
     public String addUser(@RequestBody String json) {
         User user = new User(json);
         if (user.getRole() == null) user.setRole(new Role(null, Role.USER_ROLE));
-        if (user.getEnabled() == null) user.setEnabled(true);
+        if (user.getEnabled() == null) user.setEnabled(false);
         userService.encodePassword(user);
         return userService.save(user).toJson();
     }
