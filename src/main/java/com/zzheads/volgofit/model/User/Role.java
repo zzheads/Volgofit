@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Entity(name = "role")
 public class Role {
-    public static final String USER_ROLE = "USER";
     public static final String ADMIN_ROLE = "ADMIN";
+    public static final String CLIENT_ROLE = "CLIENT";
+    public static final String TRAINER_ROLE = "TRAINER";
 
     @Id
     @Column(name = "role_id")

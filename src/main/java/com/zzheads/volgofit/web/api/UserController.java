@@ -60,7 +60,7 @@ public class UserController {
     public String addUser(@RequestBody String json) {
         User user = new User(json);
         if (userService.getAllUsernames().contains(user.getUsername())) throw new ServerError("Duplicate username", null);
-        if (user.getRole() == null) user.setRole(new Role(null, Role.USER_ROLE));
+        if (user.getRole() == null) user.setRole(new Role(null, Role.CLIENT_ROLE));
         if (user.getEnabled() == null) user.setEnabled(false);
         userService.encodePassword(user);
         userService.save(user).toJson();
