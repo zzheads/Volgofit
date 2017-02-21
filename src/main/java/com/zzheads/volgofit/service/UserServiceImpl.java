@@ -1,8 +1,10 @@
 package com.zzheads.volgofit.service;
 
 import com.zzheads.volgofit.config.EmailConfig;
+import com.zzheads.volgofit.dao.RoleDao;
 import com.zzheads.volgofit.dao.UserDao;
 import com.zzheads.volgofit.dto.ApiResult;
+import com.zzheads.volgofit.model.User.Role;
 import com.zzheads.volgofit.model.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,10 +25,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final RoleDao roleDao;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao) {
         this.userDao = userDao;
+        this.roleDao = roleDao;
     }
 
     @Bean
@@ -46,12 +50,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        if (user == null) return null;
+        Role role = roleDao.findByName(user.getRole().getName());
+        if (role != null) user.setRole(role);
         return userDao.save(user);
     }
 
     @Override
     public void delete(User user) {
         userDao.delete(user);
+    }
+
+    @Override
+    public Collection<String> getAllUsernames() {
+        return findAll().stream().map(User::getUsername).collect(Collectors.toList());
     }
 
     @Override
@@ -65,6 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
         if(user == null) {
@@ -75,7 +92,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void encodePassword(User user) {
-        if (user != null) user.setPassword(passwordEncoder().encode(user.getPassword()));
+        if (user == null) return;
+        String rawPassword = user.getPassword();
+        user.setPassword(passwordEncoder().encode(rawPassword));
     }
 
     @Override
@@ -86,8 +105,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult checkUserCreds(User user) {
         if (user == null) throw new UsernameNotFoundException("User not found");
-        if (!user.isEnabled()) return new ApiResult(false, "User is disabled");
         User storedUser = findByName(user.getUsername());
+        if (!storedUser.isEnabled()) return new ApiResult(false, "User is disabled");
         boolean result = match(user.getPassword(), storedUser.getPassword());
         ApiResult apiResult = new ApiResult(result);
         if (result) apiResult.setMessage("Credintials is ok"); else apiResult.setMessage("Incorrect password");
@@ -97,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getRawToken(User user) {
         if (user == null) return null;
-        return String.format("%d%s%s%s", user.getId(), user.getUsername(), user.getPassword(), user.getRole().getName());
+        return String.format("%d%s%s%s", user.getId(), user.getEmail(), user.getPassword(), user.getRole().getName());
     }
 
     @Override

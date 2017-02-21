@@ -2,8 +2,7 @@ package com.zzheads.volgofit.model.Workout;
 
 import com.zzheads.volgofit.dto.Workout.WorkoutDto;
 import com.zzheads.volgofit.model.Imageable.Imageable;
-import com.zzheads.volgofit.model.Person.Client;
-import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.model.User.User;
 import com.zzheads.volgofit.util.DateConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,32 +19,55 @@ import java.util.stream.Collectors;
 
 @Entity(name = "workout")
 public class Workout extends Imageable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "workout_id")
     private Long id;
     private String title;
     private String description;
     private String place;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "DD/MM/YYYY HH:MM")
     private Date beginTime;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "DD/MM/YYYY HH:MM")
     private Date endTime;
-    private Trainer trainer;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "trainer_id")
+    private User trainer;
+
     private String imagePath;
-    private List<Client> clients;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "workout_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
+    private List<User> clients;
 
     public Workout() {
     }
 
     public Workout(WorkoutDto workoutDto) {
-        this.id = workoutDto.getId();
-        this.title = workoutDto.getTitle();
-        this.description = workoutDto.getDescription();
-        this.place = workoutDto.getPlace();
-        this.imagePath = workoutDto.getImagePath();
-        this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
-        this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
-        this.trainer = workoutDto.getTrainer();
-        this.clients = Arrays.stream(workoutDto.getClients()).collect(Collectors.toList());
+        if (workoutDto != null) {
+            this.id = workoutDto.getId();
+            this.title = workoutDto.getTitle();
+            this.description = workoutDto.getDescription();
+            this.place = workoutDto.getPlace();
+            this.imagePath = workoutDto.getImagePath();
+            this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
+            this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
+            if (workoutDto.getTrainer() != null) {
+                this.trainer = new User(workoutDto.getTrainer());
+            }
+            if (workoutDto.getClients() != null) {
+                this.clients = Arrays.stream(workoutDto.getClients()).map(User::new).collect(Collectors.toList());
+            }
+        }
     }
 
-    public Workout(Long id, String title, String description, String place, String imagePath, Date beginTime, Date endTime, Trainer trainer, List<Client> clients) {
+    public Workout(Long id, String title, String description, String place, String imagePath, Date beginTime, Date endTime, User trainer, List<User> clients) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -57,9 +79,6 @@ public class Workout extends Imageable {
         this.clients = clients;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "workout_id")
     public Long getId() {
         return this.id;
     }
@@ -100,8 +119,6 @@ public class Workout extends Imageable {
         this.imagePath = imagePath;
     }
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "DD/MM/YYYY HH:MM")
     public Date getBeginTime() {
         return beginTime;
     }
@@ -110,8 +127,6 @@ public class Workout extends Imageable {
         this.beginTime = beginTime;
     }
 
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "DD/MM/YYYY HH:MM")
     public Date getEndTime() {
         return endTime;
     }
@@ -120,31 +135,27 @@ public class Workout extends Imageable {
         this.endTime = endTime;
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "trainer_id")
-    public Trainer getTrainer() {
+    public User getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(Trainer trainer) {
+    public void setTrainer(User trainer) {
         this.trainer = trainer;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "workouts_clients", joinColumns = { @JoinColumn(name = "workout_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
-    public List<Client> getClients() {
+    public List<User> getClients() {
         return clients;
     }
 
-    public void setClients(List<Client> clients) {
+    public void setClients(List<User> clients) {
         this.clients = clients;
     }
 
-    public void addClient(Client client) {
+    public void addClient(User client) {
         clients.add(client);
     }
 
-    public void removeClient(Client client) {
+    public void removeClient(User client) {
         clients.remove(client);
     }
 
@@ -167,8 +178,12 @@ public class Workout extends Imageable {
         this.imagePath = workoutDto.getImagePath();
         this.beginTime = DateConverter.stringToDate(workoutDto.getBeginTime(), true);
         this.endTime = DateConverter.stringToDate(workoutDto.getEndTime(), true);
-        this.trainer = workoutDto.getTrainer();
-        this.clients = Arrays.stream(workoutDto.getClients()).collect(Collectors.toList());
+        if (workoutDto.getTrainer() != null) {
+            this.trainer = new User(workoutDto.getTrainer());
+        }
+        if (workoutDto.getClients() != null) {
+            this.clients = Arrays.stream(workoutDto.getClients()).map(User::new).collect(Collectors.toList());
+        }
     }
 
     public static String toJson(Collection<Workout> workouts) {

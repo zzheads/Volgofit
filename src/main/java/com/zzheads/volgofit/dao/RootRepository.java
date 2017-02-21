@@ -2,9 +2,7 @@ package com.zzheads.volgofit.dao;
 
 import com.google.gson.Gson;
 import com.zzheads.volgofit.model.News.News;
-import com.zzheads.volgofit.model.Person.Client;
-import com.zzheads.volgofit.model.Person.Person;
-import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.model.User.User;
 import com.zzheads.volgofit.model.Workout.Workout;
 import com.zzheads.volgofit.util.DateConverter;
 import org.springframework.stereotype.Repository;
@@ -59,15 +57,7 @@ public class RootRepository {
             }
             break;
 
-            case "trainer": for (Field field : Trainer.class.getDeclaredFields()) {
-                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
-            }
-
-            case "client": for (Field field : Client.class.getDeclaredFields()) {
-                model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
-            }
-
-            case "person": for (Field field : Person.class.getDeclaredFields()) {
+            case "user": for (Field field : User.class.getDeclaredFields()) {
                 model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
             }
             break;
@@ -76,6 +66,7 @@ public class RootRepository {
                 model.put(field.getName(), DateConverter.getWordAfterLastPoint(field.getType().getName()));
             }
             break;
+
             default: return null;
         }
         return gson.toJson(model);

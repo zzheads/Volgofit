@@ -38,6 +38,7 @@ public class News extends Imageable {
     }
 
     public News(NewsDto news) {
+        if (news == null) return;
         this.id = news.getId();
         this.date = DateConverter.stringToDate(news.getDate(), false);
         this.text = news.getText();
@@ -114,7 +115,9 @@ public class News extends Imageable {
         this.date = DateConverter.stringToDate(newsDto.getDate(), false);
         this.text = newsDto.getText();
         this.author = newsDto.getAuthor();
-        this.hashTags = Arrays.stream(newsDto.getHashTags()).collect(Collectors.toSet());
+        if (newsDto.getHashTags() != null) {
+            this.hashTags = Arrays.stream(newsDto.getHashTags()).collect(Collectors.toSet());
+        }
     }
 
     public static String toJson(Collection<News> news) {

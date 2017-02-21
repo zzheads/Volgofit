@@ -8,28 +8,28 @@ import com.google.gson.GsonBuilder;
 public class ApiResult {
     private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
-    private boolean result;
+    private boolean success;
     private String message;
+    private Object result;
 
     public String toJson() {
         return gson.toJson(this, ApiResult.class);
     }
 
-    public ApiResult(boolean result, String message) {
-        this.result = result;
+    public ApiResult(boolean success, String message, Object result) {
+        this.success = success;
         this.message = message;
-    }
-
-    public ApiResult(boolean result) {
         this.result = result;
     }
 
-    public boolean isResult() {
-        return result;
+    public ApiResult(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+        this.result = null;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public ApiResult(boolean success) {
+        this.success = success;
     }
 
     public String getMessage() {
@@ -38,5 +38,21 @@ public class ApiResult {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
     }
 }

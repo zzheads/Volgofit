@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.zzheads.volgofit.config.EmailConfig;
 import com.zzheads.volgofit.dto.ApiResult;
 import com.zzheads.volgofit.exceptions.ApiError;
+import com.zzheads.volgofit.exceptions.ServerError;
 import com.zzheads.volgofit.model.User.Role;
 import com.zzheads.volgofit.model.User.User;
 import com.zzheads.volgofit.service.UserService;
@@ -58,10 +59,12 @@ public class UserController {
     @ResponseStatus(OK)
     public String addUser(@RequestBody String json) {
         User user = new User(json);
+        if (userService.getAllUsernames().contains(user.getUsername())) throw new ServerError("Duplicate username", null);
         if (user.getRole() == null) user.setRole(new Role(null, Role.USER_ROLE));
         if (user.getEnabled() == null) user.setEnabled(false);
         userService.encodePassword(user);
-        return userService.save(user).toJson();
+        userService.save(user).toJson();
+        return sendMail(user);
     }
 
     @RequestMapping(value = "/{id}", method = PUT, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
@@ -97,26 +100,27 @@ public class UserController {
 
     @RequestMapping(value = "/confirm", method = GET)
     @ResponseStatus(OK)
-    public String confirm(@RequestParam String username, @RequestParam String token) {
-        User user = userService.findByName(username);
+    public String confirm(@RequestParam String email, @RequestParam String token) {
+        User user = userService.findByEmail(email);
         if (userService.match(userService.getRawToken(user), token)) {
             user.setEnabled(true);
             userService.save(user);
-            return new ApiResult(true, String.format("Email of new user %s confirmed, account is activated", username)).toJson();
+            return new ApiResult(true, String.format("Email of new user %s confirmed, account is activated", user.getUsername())).toJson();
         } else {
             return new ApiResult(false, String.format("Your token %s is incorrect", token)).toJson();
         }
     }
 
     @RequestMapping (path = "/sendmail", method = GET, produces = {APPLICATION_JSON_UTF8_VALUE}, consumes = {APPLICATION_JSON_UTF8_VALUE})
-    @ResponseBody public String sendMail (@RequestParam String username) {
-        User user = userService.findByName(username);
-        if (user != null) {
-            String confirm = userService.getEncodedToken(user);
-            String body = EmailConfig.emailBody(user.getUsername(), confirm);
-            return userService.sendMail(user.getUsername(), "volgafit@gmail.com", body, "Please activate your VolgaFit account").toJson();
-        }
-        throw new UsernameNotFoundException(String.format("User %s not found", username));
+    @ResponseBody public String sendMail (@RequestParam String email) {
+        User user = userService.findByName(email);
+        if (user != null) return sendMail(user);
+        else throw new UsernameNotFoundException(String.format("Email %s not found", email));
     }
 
+    private String sendMail(User user) {
+        String confirm = userService.getEncodedToken(user);
+        String body = EmailConfig.emailBody(user.getEmail(), confirm);
+        return userService.sendMail(user.getEmail(), "volgafit@gmail.com", body, "Please activate your VolgaFit account").toJson();
+    }
 }

@@ -9,13 +9,14 @@ import org.springframework.core.env.Environment;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static com.zzheads.volgofit.config.DataConfig.AppStatus.DEBUG;
 import static com.zzheads.volgofit.config.DataConfig.AppStatus.DEPLOY;
 
 @Configuration
 public class DataConfig {
     private final Environment env;
     static String HOST;
-    private AppStatus appStatus = DEPLOY;
+    private AppStatus appStatus = DEBUG;
 
     enum AppStatus {
         DEBUG,

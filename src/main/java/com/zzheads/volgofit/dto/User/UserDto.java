@@ -3,6 +3,7 @@ package com.zzheads.volgofit.dto.User;//
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.zzheads.volgofit.dto.Workout.WorkoutDto;
 import com.zzheads.volgofit.model.User.User;
 
 import java.lang.reflect.Type;
@@ -18,25 +19,53 @@ public class UserDto {
     private Long id;
     private String username;
     private String password;
+    private String email;
     private Boolean enabled;
     private RoleDto role;
+    private ProfileDto profile;
+    private ContactDto contact;
+    private WorkoutDto[] trainerOf;
+    private WorkoutDto[] clientOf;
+    private String imagePath;
+
+    public UserDto(Long id, String username, String password, String email, Boolean enabled, RoleDto role, ProfileDto profile, ContactDto contact, WorkoutDto[] trainerOf, WorkoutDto[] clientOf, String imagePath) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.role = role;
+        this.profile = profile;
+        this.contact = contact;
+        this.trainerOf = trainerOf;
+        this.clientOf = clientOf;
+        this.imagePath = imagePath;
+    }
 
     public UserDto(User user) {
         if (user != null) {
             this.id = user.getId();
             this.username = user.getUsername();
             this.password = user.getPassword();
+            this.email = user.getEmail();
             this.enabled = user.isEnabled();
-            this.role = new RoleDto(user.getRole());
+            if (user.getRole() != null) {
+                this.role = new RoleDto(user.getRole());
+            }
+            if (user.getProfile() != null) {
+                this.profile = new ProfileDto(user.getProfile());
+            }
+            if (user.getContact() != null) {
+                this.contact = new ContactDto(user.getContact());
+            }
+            if (user.getTrainerOf() != null) {
+                this.trainerOf = user.getTrainerOf().stream().map(WorkoutDto::new).collect(Collectors.toList()).toArray(new WorkoutDto[user.getTrainerOf().size()]);
+            }
+            if (user.getClientOf() != null) {
+                this.clientOf = user.getClientOf().stream().map(WorkoutDto::new).collect(Collectors.toList()).toArray(new WorkoutDto[user.getClientOf().size()]);
+            }
+            this.imagePath = user.getImagePath();
         }
-    }
-
-    public UserDto(Long id, String username, String password, Boolean enabled, RoleDto role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.role = role;
     }
 
     public UserDto(String json) {
@@ -45,8 +74,14 @@ public class UserDto {
             this.id = userDto.id;
             this.username = userDto.username;
             this.password = userDto.password;
+            this.email = userDto.email;
             this.enabled = userDto.enabled;
             this.role = userDto.role;
+            this.profile = userDto.profile;
+            this.contact = userDto.contact;
+            this.trainerOf = userDto.trainerOf;
+            this.clientOf = userDto.clientOf;
+            this.imagePath = userDto.imagePath;
         }
     }
 
@@ -108,5 +143,57 @@ public class UserDto {
 
     public void setRole(RoleDto role) {
         this.role = role;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public ProfileDto getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ProfileDto profile) {
+        this.profile = profile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ContactDto getContact() {
+        return contact;
+    }
+
+    public void setContact(ContactDto contact) {
+        this.contact = contact;
+    }
+
+    public WorkoutDto[] getTrainerOf() {
+        return trainerOf;
+    }
+
+    public void setTrainerOf(WorkoutDto[] trainerOf) {
+        this.trainerOf = trainerOf;
+    }
+
+    public WorkoutDto[] getClientOf() {
+        return clientOf;
+    }
+
+    public void setClientOf(WorkoutDto[] clientOf) {
+        this.clientOf = clientOf;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

@@ -1,12 +1,9 @@
 package com.zzheads.volgofit.dto.Workout;//
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.zzheads.volgofit.model.Person.Client;
-import com.zzheads.volgofit.model.Person.Trainer;
+import com.zzheads.volgofit.dto.User.UserDto;
 import com.zzheads.volgofit.model.Workout.Workout;
 import com.zzheads.volgofit.util.DateConverter;
 
@@ -24,8 +21,8 @@ public class WorkoutDto {
     private String imagePath;
     private String beginTime;
     private String endTime;
-    private Trainer trainer;
-    private Client[] clients;
+    private UserDto trainer;
+    private UserDto[] clients;
 
     public WorkoutDto(Workout workout) {
         this.id = workout.getId();
@@ -35,11 +32,11 @@ public class WorkoutDto {
         this.imagePath = workout.getImagePath();
         this.beginTime = DateConverter.dateToString(workout.getBeginTime(), true);
         this.endTime = DateConverter.dateToString(workout.getEndTime(), true);
-        this.trainer = workout.getTrainer();
-        this.clients = workout.getClients().toArray(new Client[workout.getClients().size()]);
+        this.trainer = new UserDto(workout.getTrainer());
+        this.clients = workout.getClients().stream().map(UserDto::new).collect(Collectors.toList()).toArray(new UserDto[workout.getClients().size()]);
     }
 
-    public WorkoutDto(Long id, String title, String description, String place, String imagePath, String beginTime, String endTime, Trainer trainer, Client[] clients) {
+    public WorkoutDto(Long id, String title, String description, String place, String imagePath, String beginTime, String endTime, UserDto trainer, UserDto[] clients) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -107,35 +104,23 @@ public class WorkoutDto {
         this.endTime = endTime;
     }
 
-    public Trainer getTrainer() {
+    public UserDto getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(Trainer trainer) {
+    public void setTrainer(UserDto trainer) {
         this.trainer = trainer;
     }
 
-    public Client[] getClients() {
+    public UserDto[] getClients() {
         return clients;
     }
 
-    public void setClients(Client[] clients) {
+    public void setClients(UserDto[] clients) {
         this.clients = clients;
     }
 
-    private static ExclusionStrategy WorkoutDtoExclusionStartegy = new ExclusionStrategy() {
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return f.getName().equals("workouts");
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return (clazz == Workout.class);
-        }
-    };
-
-    private static Gson gson = new GsonBuilder().setExclusionStrategies(WorkoutDtoExclusionStartegy).serializeNulls().create();
+    private static Gson gson = new GsonBuilder().serializeNulls().create();
 
     public String toJson() {
         return gson.toJson(this, WorkoutDto.class);

@@ -11,9 +11,11 @@ public interface UserService extends UserDetailsService {
     User findById(Long id);
     User save(User user);
     void delete(User user);
+    Collection<String>getAllUsernames();
 
     Collection<String> getRegisteredUsernames();
     User findByName(String name);
+    User findByEmail(String email);
     void encodePassword(User user);
     boolean match(String raw, String encoded);
     ApiResult checkUserCreds(User user);
